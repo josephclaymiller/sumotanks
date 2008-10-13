@@ -1,6 +1,6 @@
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
-import tank
+import playertank, enemytank
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
@@ -17,8 +17,8 @@ class World(DirectObject):
         self.setupLights()
         self.loadModels()
         self.accept("escape", sys.exit)
-        self.player = tank.PlayerTank()
-        self.computer = tank.EnemyTank()
+        self.player = playertank.PlayerTank()
+        self.computer = enemytank.EnemyTank()
         taskMgr.add(self.player.moveplayerTurret, "moveplayerturretTask")
         taskMgr.add(self.player.moveplayerBase, "moveplayerbaseTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
