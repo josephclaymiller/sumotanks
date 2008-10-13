@@ -1,0 +1,11 @@
+__Class Hierarchy__
+
+Entity (Collision code, mass property)
+    Tank
+    Projectile
+    Arena
+
+Game Engine
+Physics
+AI
+

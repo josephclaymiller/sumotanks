@@ -1,0 +1,1 @@
+(A Game Bible is essentially a high-level look at how the game would appear to the player and how the game mechanics should work)
