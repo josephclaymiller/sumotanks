@@ -15,14 +15,22 @@ class EnemyTank(DirectObject):  #use to create computer tank
         self.enemyturret.reparentTo(render)
         self.enemyturret.setScale(.005)
         self.enemyturret.setH(180)
-        self.enemyturret.setPos(7,7,0)
+
+        self.enemybase = Actor("panda-model", {"walk":"panda-walk4"})
+        self.enemybase.reparentTo(render)
+        self.enemybase.setScale(.005)
+        self.enemybase.setH(180)
+
+        self.enemybase.setPos(7,7,0)
         self.playerPos = [0,0,0]
+        self.loweraimingoffset = -1
+        self.upperaimingoffset = 1
 
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
     def moveenemyTurret(self,task): #used so enemy turret is aimed at the player
-        position = self.enemyturret.getPos()
+        #position = self.enemyturret.getPos()
         xposition = self.enemyturret.getX() #Used to get current coordinates of the turret
         yposition = self.enemyturret.getY()
         zposition = self.enemyturret.getZ()
@@ -30,5 +38,9 @@ class EnemyTank(DirectObject):  #use to create computer tank
         dy = self.playerPos[1]-yposition
         heading = rad2Deg(math.atan2(dy, dx))
         heading = heading+90
-        self.enemyturret.setHpr(heading,0,0)
+        headingoffset = random.randrange(self.loweraimingoffset,self.upperaimingoffset) #random offset for heading
+        pitchoffset = random.randrange(self.loweraimingoffset,self.upperaimingoffset)   #random offset for pitch
+        modifiedheading = heading+headingoffset  
+        self.enemyturret.setHpr(modifiedheading,pitchoffset,0)
+        self.enemyturret.setPos(self.enemybase.getX(),self.enemybase.getY(),self.enemybase.getZ()+2)
         return Task.cont        

@@ -54,7 +54,7 @@ class PlayerTank(DirectObject): #use to create player tank
         #self.headlightNP = self.base.attachNewNode(self.headlight)
         #self.headlightNP.setH(self.base.getH()+360)
         
-        dist = 1
+        dist = .1
         angle = deg2Rad(self.turret.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
         dy = dist * -math.cos(angle)#Calculate change in y direction
@@ -137,7 +137,7 @@ class PlayerTank(DirectObject): #use to create player tank
         if self.turret.getP() < -8.6:
             pitch = -8.6
     
-        camera.setPosHpr(xposition-dx,yposition-dy,3,self.turret.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
+        camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+2,self.turret.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
         position = self.turret.getPos()
        
