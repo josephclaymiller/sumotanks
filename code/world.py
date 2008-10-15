@@ -23,6 +23,7 @@ class World(DirectObject):
         taskMgr.add(self.player.moveplayerBase, "moveplayerbaseTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")
+        taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         
         self.accept("w", self.setKey, ["forward", 1])
         self.accept("s", self.setKey, ["back", 1])
@@ -32,7 +33,8 @@ class World(DirectObject):
         self.accept("s-up", self.setKey, ["back", 0]) 
         self.accept("a-up", self.setKey, ["left", 0]) 
         self.accept("d-up", self.setKey, ["right", 0]) 
-
+        self.accept("h", self.player.toggleHeadlights)
+        
      
     def setKey(self, key, value):
         self.keyMap[key] = value

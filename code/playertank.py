@@ -20,10 +20,14 @@ class PlayerTank(DirectObject): #use to create player tank
         self.base.setScale(.005)
         self.base.setH(180) 
 
+        self.headlight = Spotlight("headLight")
+        self.headlightNP = render.attachNewNode(self.headlight)
+        self.headlightstatus = 0
+       
         self.xycameradistance = 15    
         self.zcameradistance = 15
 
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0}
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "headlight":0}
     
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
@@ -33,7 +37,34 @@ class PlayerTank(DirectObject): #use to create player tank
         self.keyMap = keyMap
         #print self.keyMap
 
+    def toggleHeadlights(self):
+        if self.headlightstatus == 1: #Headlight is on...turn it off
+            print "Turn headlight off"
+            render.clearLight(self.headlightNP)
+            self.headlightstatus = 0
+        elif self.headlightstatus == 0: #Headlight is off...turn it on
+            print "Turn headlight on"
+            render.setLight(self.headlightNP)
+            self.headlightstatus = 1
+
+    def setHeadlights(self,task):
+        self.headlight.setColor(VBase4(1, 1, 1, 1))
+        lens = PerspectiveLens()
+        self.headlight.setLens(lens)
+        #self.headlightNP = self.base.attachNewNode(self.headlight)
+        #self.headlightNP.setH(self.base.getH()+360)
+        
+        dist = 1
+        angle = deg2Rad(self.turret.getH())
+        dx = dist * math.sin(angle) #Calculate change in x direction
+        dy = dist * -math.cos(angle)#Calculate change in y direction
+        self.headlightNP.setPosHpr(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ(),self.base.getH()+180,self.base.getP(),0)
+ 
+
+        return Task.cont
+    
     def moveplayerBase(self,task):
+        """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforBase
         if self.keyMap["forward"]:
             dist = 0.1
@@ -103,10 +134,10 @@ class PlayerTank(DirectObject): #use to create player tank
         pitch = self.turret.getP()  #Set pitch of camera (limits it so player can only look so high and so low
         if self.turret.getP() > 8.6:
             pitch = 8.6
-        if self.turret.getP() < -7:
-            pitch = -7
+        if self.turret.getP() < -8.6:
+            pitch = -8.6
     
-        camera.setPosHpr(xposition-dx,yposition-dy,2,self.turret.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
+        camera.setPosHpr(xposition-dx,yposition-dy,3,self.turret.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
         position = self.turret.getPos()
        
