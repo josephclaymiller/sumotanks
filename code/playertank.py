@@ -8,17 +8,33 @@ import sys, math
 import random
 import world
 
+import sys,os
+from pandac.PandaModules import Filename
+
 class PlayerTank(DirectObject): #use to create player tank
     def __init__(self):
-        self.turret = Actor("panda-model", {"walk":"panda-walk4"})
+        #NOTE!!!: I couldn't get the models to load conveniently (I believe panda needs an absolute path
+        #So in your panda config file (located in Panda3d-1.5.3/etc paste the line where the sumotanks file is
+        #for me I had to paste: model-path    C:\Documents and Settings\therrj\Desktop\sumotanks\art\tank
+        #Put this where the other model-path lines are
+        #If there is a more convenient way to do this feel free
+
+
+        self.cannon = Actor("cannon.egg")
+        self.cannon.reparentTo(render)
+        self.turret = Actor("turret.egg")
         self.turret.reparentTo(render)
-        self.turret.setScale(.005)
-        self.turret.setH(180)
+#        self.turret = Actor("panda-model", {"walk":"panda-walk4"})
+#        self.turret.reparentTo(render)
+#        self.turret.setScale(.005)
+#        self.turret.setH(180)
+
+        #self.base = Actor("../art/tank/newtank")
+        self.base = Actor("newtank.egg")
         
-        self.base = Actor("panda-model")
         self.base.reparentTo(render)
-        self.base.setScale(.005)
-        self.base.setH(180) 
+#        self.base.setScale(.005)
+#        self.base.setH(180) 
 
         self.headlight = Spotlight("headLight")
         self.headlightNP = render.attachNewNode(self.headlight)
@@ -26,6 +42,7 @@ class PlayerTank(DirectObject): #use to create player tank
        
         self.xycameradistance = 15    
         self.zcameradistance = 15
+        self.cannonmove = 5
 
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "headlight":0}
     
@@ -97,7 +114,8 @@ class PlayerTank(DirectObject): #use to create player tank
 
         #Set Position on top of base:
         baseposition = self.base.getPos()
-        self.turret.setPos(self.base.getX(),self.base.getY(),2)
+        self.turret.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
+        #self.cannon.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
 
 
         if base.mouseWatcherNode.hasMouse():        
@@ -106,8 +124,8 @@ class PlayerTank(DirectObject): #use to create player tank
             move = [x,y] #Where mouse moved to 
             factor = 10
             base.win.movePointer(0, 400, 300) #Move cursor to center of screen
-            deltaHeading = self.turret.getH() + move[0] * -100 #Calculate change in heading
-            deltaPitch = self.turret.getP() + move[1] * -100   #Calculate change in pitch
+            deltaHeading = self.cannon.getH() + move[0] * -100 #Calculate change in heading
+            deltaPitch = self.cannon.getP() + move[1] * -100   #Calculate change in pitch
 
             if deltaPitch < -30:
                 deltaPitch = -30
@@ -115,31 +133,47 @@ class PlayerTank(DirectObject): #use to create player tank
                 deltaPitch = 0           
 
             self.turret.setH(deltaHeading) #Animate change in heading
-            self.turret.setP(deltaPitch)   #Animate change in pitch - this would be for the actual gun, if we were going to give it the ability to move up and down
-    
-        position = self.turret.getPos()
-        xposition = self.turret.getX() #Used to get current coordinates of the turret
-        yposition = self.turret.getY()
-        zposition = self.turret.getZ()
-    
-        dist = self.xycameradistance #Distance the camera will be behind the turret
-        angle = deg2Rad(self.turret.getH())
+            self.cannon.setH(deltaHeading)
+            #self.turret.setP(deltaPitch)   #Animate change in pitch - this would be for the actual gun, if we were going to give it the ability to move up and down
+            self.cannon.setP(deltaPitch)   #Animate change in pitch - this would be for the actual gun, if we were going to give it the ability to move up and down
+        
+        
+        dist = self.cannon.getP()*-1 #When the cannon pitches upwards it moves backwards a bit...this fixes it...but I have no idea why it works
+        angle = deg2Rad(self.cannon.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
-        dy = dist * -math.cos(angle)#Calculate change in y direction
+        dy = dist * -math.cos(angle)#Calculate change in y direction   
+        dx = dx/40
+        dy = dy/40
+        self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
+
+
+        position = self.cannon.getPos()
+        xposition = self.cannon.getX() #Used to get current coordinates of the turret
+        yposition = self.cannon.getY()
+        zposition = self.cannon.getZ()
     
-        dist = self.zcameradistance
-        angle = deg2Rad(self.turret.getP())
+        #dist = self.xycameradistance #Distance the camera will be behind the turret
+        dist = 20
+        angle = deg2Rad(self.cannon.getH())
+        dx = dist * math.sin(angle) #Calculate change in x direction
+        dy = dist * -math.cos(angle)#Calculate change in y direction    
+
+    
+        #dist = self.zcameradistance
+        dist = 15
+        angle = deg2Rad(self.cannon.getP())
         dz = dist*math.tan(angle)   #Calculate change in pitch
     
-        pitch = self.turret.getP()  #Set pitch of camera (limits it so player can only look so high and so low
-        if self.turret.getP() > 8.6:
+        pitch = self.cannon.getP()  #Set pitch of camera (limits it so player can only look so high and so low
+        if self.cannon.getP() > 8.6:
             pitch = 8.6
-        if self.turret.getP() < -8.6:
+        if self.cannon.getP() < -8.6:
             pitch = -8.6
-    
-        camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+2,self.turret.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
+        #print pitch
+        pitch +=8
+        camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
-        position = self.turret.getPos()
+        #position = self.turret.getPos()
        
         self.prevtimeforTurret = task.time
         
