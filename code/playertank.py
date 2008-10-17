@@ -6,12 +6,12 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 import sys, math
 import random
-import world
+import world, entity
 
 import sys,os
 from pandac.PandaModules import Filename
 
-class PlayerTank(DirectObject): #use to create player tank
+class PlayerTank(entity.entity): #use to create player tank
     def __init__(self):
         #NOTE!!!: I couldn't get the models to load conveniently (I believe panda needs an absolute path
         #So in your panda config file (located in Panda3d-1.5.3/etc paste the line where the sumotanks file is
@@ -44,8 +44,11 @@ class PlayerTank(DirectObject): #use to create player tank
     
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
-        self.prevtimeforPlayer = 0
 
+        self.maxspeed = 0
+
+        entity.entity.__init__(self, 0, 0, 0, 5)
+        self.prevtimeforPlayer = 0
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
@@ -78,28 +81,30 @@ class PlayerTank(DirectObject): #use to create player tank
         position = self.turret.getPos()
         return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])
 
-    
-    #def moveplayerBase(self,task):
-    def movePlayer(self,task):    
-        """Code to move the base and turret of the players tank"""
-        #Code to move Base:
+    
+    def movePlayer(self,task):
+        """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
+        speed = self.getSpeed()
+        #print speed
+        self.base.setPos(self.base.getX() + speed[0], self.base.getY() + speed[1], 0)
         if self.keyMap["forward"]:
-            dist = 0.1
+            dist = .001
             angle = deg2Rad(self.base.getH())
             dx = dist * math.sin(angle)
             dy = dist * -math.cos(angle)
-            self.base.setPos(self.base.getX() + dx, self.base.getY() + dy, 0) 
+            self.addForce(dx,dy,0)
         if self.keyMap["left"]:
             self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
         if self.keyMap["right"]:
             self.base.setH(self.base.getH() - delta*100) #fiddle with this number to determine how fast it moves)
         if self.keyMap["back"]:
-            dist = 0.1
+            dist = .001
             angle = deg2Rad(self.base.getH())
             dx = dist * math.sin(angle)
             dy = dist * -math.cos(angle)
-            self.base.setPos(self.base.getX() - dx, self.base.getY() - dy, 0)
+            self.addForce(-dx,-dy,0)
+           #self.base.setPos(self.base.getX() - dx, self.base.getY() - dy, 0)
         
         #Code to determine animations:
         if self.keyMap["forward"]:
