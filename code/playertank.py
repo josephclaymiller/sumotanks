@@ -25,18 +25,15 @@ class PlayerTank(DirectObject): #use to create player tank
         self.cannon.reparentTo(render)
         self.turret = Actor("turret.egg")
         self.turret.reparentTo(render)
-#        self.turret = Actor("panda-model", {"walk":"panda-walk4"})
-#        self.turret.reparentTo(render)
-#        self.turret.setScale(.005)
-#        self.turret.setH(180)
 
-        #self.base = Actor("../art/tank/newtank")
-        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg"})
-        #self.base = Actor("panda-model", {"move":"panda-walk4"})
+        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.reparentTo(render)
-        #self.base.setScale(.005)
-        #self.base.setH(180) 
-
+        self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
+        self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
+        self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
+        self.turnrightcontrol=self.base.getAnimControl("turnright") #Set animation control for moveforwards
+        
+        
         self.headlight = Spotlight("headLight")
         self.headlightNP = render.attachNewNode(self.headlight)
         self.headlightstatus = 0
@@ -53,8 +50,7 @@ class PlayerTank(DirectObject): #use to create player tank
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
-        #print self.keyMap
-
+        
     def toggleHeadlights(self):
         if self.headlightstatus == 1: #Headlight is on...turn it off
             print "Turn headlight off"
@@ -69,8 +65,6 @@ class PlayerTank(DirectObject): #use to create player tank
         self.headlight.setColor(VBase4(1, 1, 1, 1))
         lens = PerspectiveLens()
         self.headlight.setLens(lens)
-        #self.headlightNP = self.base.attachNewNode(self.headlight)
-        #self.headlightNP.setH(self.base.getH()+360)
         
         dist = .1
         angle = deg2Rad(self.turret.getH())
@@ -104,16 +98,27 @@ class PlayerTank(DirectObject): #use to create player tank
         #determine animations
         if self.keyMap["forward"]:
             if self.isMoving == False:
+                self.moveforwardscontrol.setPlayRate(10)#set play rate for moveforwards animation
                 self.base.loop("moveforwards")
                 self.isMoving = True
         elif self.keyMap["back"]:
             if self.isMoving == False:
+                self.movebackwardsscontrol.setPlayRate(10)#set play rate for movebackwards animation
                 self.base.loop("movebackwards")
+                self.isMoving = True
+        elif self.keyMap["left"]:
+            if self.isMoving == False:
+                self.turnleftcontrol.setPlayRate(10)#set play rate for turnleft animation
+                self.base.loop("turnleft")
+                self.isMoving = True
+        elif self.keyMap["right"]:
+            if self.isMoving == False:
+                self.turnrightcontrol.setPlayRate(10)#set play rate for turnright animation
+                self.base.loop("turnright")
                 self.isMoving = True
         else:
             if self.isMoving:
                 self.base.stop()
-                #self.panda.pose("walk", 4) #move model to this frame number
                 self.isMoving = False
                             
         self.prevtimeforBase = task.time        
@@ -168,14 +173,12 @@ class PlayerTank(DirectObject): #use to create player tank
         yposition = self.cannon.getY()
         zposition = self.cannon.getZ()
     
-        #dist = self.xycameradistance #Distance the camera will be behind the turret
         dist = 20
         angle = deg2Rad(self.cannon.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
         dy = dist * -math.cos(angle)#Calculate change in y direction    
 
     
-        #dist = self.zcameradistance
         dist = 15
         angle = deg2Rad(self.cannon.getP())
         dz = dist*math.tan(angle)   #Calculate change in pitch
@@ -185,7 +188,6 @@ class PlayerTank(DirectObject): #use to create player tank
             pitch = 8.6
         if self.cannon.getP() < -8.6:
             pitch = -8.6
-        #print pitch
         pitch +=8
         camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
