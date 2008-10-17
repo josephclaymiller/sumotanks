@@ -18,6 +18,7 @@ class PlayerTank(DirectObject): #use to create player tank
         #for me I had to paste: model-path    C:\Documents and Settings\therrj\Desktop\sumotanks\art\tank
         #Put this where the other model-path lines are
         #If there is a more convenient way to do this feel free
+        self.isMoving = False
 
 
         self.cannon = Actor("cannon.egg")
@@ -30,11 +31,11 @@ class PlayerTank(DirectObject): #use to create player tank
 #        self.turret.setH(180)
 
         #self.base = Actor("../art/tank/newtank")
-        self.base = Actor("newtank.egg")
-        
+        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg"})
+        #self.base = Actor("panda-model", {"move":"panda-walk4"})
         self.base.reparentTo(render)
-#        self.base.setScale(.005)
-#        self.base.setH(180) 
+        #self.base.setScale(.005)
+        #self.base.setH(180) 
 
         self.headlight = Spotlight("headLight")
         self.headlightNP = render.attachNewNode(self.headlight)
@@ -100,6 +101,21 @@ class PlayerTank(DirectObject): #use to create player tank
             dy = dist * -math.cos(angle)
             self.base.setPos(self.base.getX() - dx, self.base.getY() - dy, 0)
         
+        #determine animations
+        if self.keyMap["forward"]:
+            if self.isMoving == False:
+                self.base.loop("moveforwards")
+                self.isMoving = True
+        elif self.keyMap["back"]:
+            if self.isMoving == False:
+                self.base.loop("movebackwards")
+                self.isMoving = True
+        else:
+            if self.isMoving:
+                self.base.stop()
+                #self.panda.pose("walk", 4) #move model to this frame number
+                self.isMoving = False
+                            
         self.prevtimeforBase = task.time        
         return Task.cont
 

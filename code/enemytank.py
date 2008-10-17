@@ -19,7 +19,7 @@ class EnemyTank(DirectObject):  #use to create computer tank
         #self.enemyturret.setScale(.005)
         #self.enemyturret.setH(180)
 
-        self.enemybase = Actor("newtank.egg")
+        self.enemybase = Actor("base.egg")
         self.enemybase.reparentTo(render)
         #self.enemybase.setScale(.005)
         #self.enemybase.setH(180)
