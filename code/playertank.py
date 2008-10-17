@@ -20,7 +20,6 @@ class PlayerTank(DirectObject): #use to create player tank
         #If there is a more convenient way to do this feel free
         self.isMoving = False
 
-
         self.cannon = Actor("cannon.egg")
         self.cannon.reparentTo(render)
         self.turret = Actor("turret.egg")
@@ -32,8 +31,7 @@ class PlayerTank(DirectObject): #use to create player tank
         self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
         self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
         self.turnrightcontrol=self.base.getAnimControl("turnright") #Set animation control for moveforwards
-        
-        
+                
         self.headlight = Spotlight("headLight")
         self.headlightNP = render.attachNewNode(self.headlight)
         self.headlightstatus = 0
@@ -46,6 +44,7 @@ class PlayerTank(DirectObject): #use to create player tank
     
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
+        self.prevtimeforPlayer = 0
 
 
     def setkeyMap(self, keyMap):
@@ -74,10 +73,17 @@ class PlayerTank(DirectObject): #use to create player tank
  
 
         return Task.cont
+
+    def getCoordinates(self):
+        position = self.turret.getPos()
+        return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])
+
     
-    def moveplayerBase(self,task):
-        """Code to move the base of the players tank"""
-        delta = task.time - self.prevtimeforBase
+    #def moveplayerBase(self,task):
+    def movePlayer(self,task):    
+        """Code to move the base and turret of the players tank"""
+        #Code to move Base:
+        delta = task.time - self.prevtimeforPlayer
         if self.keyMap["forward"]:
             dist = 0.1
             angle = deg2Rad(self.base.getH())
@@ -95,7 +101,7 @@ class PlayerTank(DirectObject): #use to create player tank
             dy = dist * -math.cos(angle)
             self.base.setPos(self.base.getX() - dx, self.base.getY() - dy, 0)
         
-        #determine animations
+        #Code to determine animations:
         if self.keyMap["forward"]:
             if self.isMoving == False:
                 self.moveforwardscontrol.setPlayRate(10)#set play rate for moveforwards animation
@@ -120,24 +126,14 @@ class PlayerTank(DirectObject): #use to create player tank
             if self.isMoving:
                 self.base.stop()
                 self.isMoving = False
-                            
+
+                           
         self.prevtimeforBase = task.time        
-        return Task.cont
-
-    def getCoordinates(self):
-        position = self.turret.getPos()
-        return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])
-
-
-    def moveplayerTurret(self, task): #right now it uses the panda as the turret...
-        """move the turret, and the camera with it"""
-        delta = task.time - self.prevtimeforTurret
-
+        
         #Set Position on top of base:
         baseposition = self.base.getPos()
         self.turret.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
-        #self.cannon.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
-
+        
 
         if base.mouseWatcherNode.hasMouse():        
             x=base.mouseWatcherNode.getMouseX() #get mouse coordinates
@@ -193,6 +189,6 @@ class PlayerTank(DirectObject): #use to create player tank
         
         #position = self.turret.getPos()
        
-        self.prevtimeforTurret = task.time
+        self.prevtimeforPlayer = task.time
         
         return Task.cont #Continue updating this task
