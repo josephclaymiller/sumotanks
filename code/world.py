@@ -20,10 +20,14 @@ class World(DirectObject):
 
         self.setupLights()
         self.loadModels()
+        self.soundqueue = soundqueue.SoundQueue()
+
         self.accept("escape", sys.exit)
         self.player = playertank.PlayerTank()
+        self.player.soundqueue = self.soundqueue
+        self.player.soundqueue.loop('idle', self.player.base.getX(), self.player.base.getY(), self.player.base.getZ())
         self.computer = enemytank.EnemyTank()
-        self.soundqueue = soundqueue.SoundQueue()
+        
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         #taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")

@@ -13,9 +13,19 @@ class SoundQueue():
         self.queue = []
 
         self.sounds = {
-                'boom': loader.loadSfx("../art/long_boom.wav"),
-                'bang': loader.loadSfx("../art/bang.wav"),
+                'boom':         loader.loadSfx("../art/sounds/long_boom.wav"),
+                'bang':         loader.loadSfx("../art/sounds/bang.wav"),
+                'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav")
             }
+
+        self.loops = {
+                'engine':   [loader.loadSfx("../art/sounds/engine.wav"), [], [], []],
+                'idle':     [loader.loadSfx("../art/sounds/engineidle.wav"), [], [], []]
+        }
+
+        for loop in self.loops:
+            self.loops[loop][0].setLoop(True)
+
         self.playerPos = [0,0,0,0]
         self.bal = 1
 
@@ -23,6 +33,19 @@ class SoundQueue():
     def enqueue(self, soundname, x, y, z):
 
         self.queue.append([soundname, x, y, z])
+
+    def loop(self, soundname, x, y, z):
+
+        if self.loops[soundname][0].status() != 2:
+            self.loops[soundname][0].play()
+
+    def unloop(self, soundname):
+
+        if soundname == 'engine' and self.loops[soundname][0].status() == 2:
+            self.sounds['engineoff'].play()    
+        self.loops[soundname][0].stop()
+        
+
 
     def setplayerPos(self,playerPosition, h):
         self.playerPos = playerPosition + [h]
@@ -39,7 +62,7 @@ class SoundQueue():
             if vol < 0:
                 vol = 0
             self.sounds[sound[0]].setVolume(vol)
-
+    
             #sets pan
             soundheading = rad2Deg(math.atan2(self.playerPos[1] - sound[2], self.playerPos[0] - sound[1])) + 90
             theta = soundheading - (self.playerPos[3] % 360)
@@ -48,7 +71,7 @@ class SoundQueue():
             print math.sin(deg2Rad(theta) * -1)
             self.bal *= -1
             self.sounds[sound[0]].setBalance(self.bal)   #math.sin(deg2Rad(theta) * -1))
-            
+        
 
             self.sounds[sound[0]].play()
 
@@ -57,12 +80,3 @@ class SoundQueue():
 
         return Task.cont
 
-'''
-self.thing.getH()
-
-
-        dx = self.playerPos[0]-xposition
-        dy = self.playerPos[1]-yposition
-
-heading = rad2Deg(math.atan2(dy, dx)) + 90
-        heading = heading+90'''
