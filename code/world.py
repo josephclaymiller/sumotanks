@@ -7,6 +7,7 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from direct.filter.CommonFilters import CommonFilters
 import sys, math
+import soundqueue
 
 class World(DirectObject):
     def __init__(self):
@@ -22,6 +23,7 @@ class World(DirectObject):
         self.accept("escape", sys.exit)
         self.player = playertank.PlayerTank()
         self.computer = enemytank.EnemyTank()
+        self.soundqueue = soundqueue.SoundQueue()
         taskMgr.add(self.player.moveplayerTurret, "moveplayerturretTask")
         taskMgr.add(self.player.moveplayerBase, "moveplayerbaseTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
