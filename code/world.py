@@ -28,6 +28,7 @@ class World(DirectObject):
         taskMgr.add(self.player.moveplayerBase, "moveplayerbaseTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")
+        taskMgr.add(self.computer.moveenemyBase, "moveenemyturretTask")
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
         

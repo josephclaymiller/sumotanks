@@ -12,19 +12,15 @@ class EnemyTank(DirectObject):  #use to create computer tank
     def __init__(self):
         
 
-        self.enemycannon = Actor("cannon.egg")
-        self.enemycannon.reparentTo(render)
-        self.enemyturret = Actor("turret.egg")
-        self.enemyturret.reparentTo(render)
-        #self.enemyturret.setScale(.005)
-        #self.enemyturret.setH(180)
-
-        self.enemybase = Actor("base.egg")
-        self.enemybase.reparentTo(render)
-        #self.enemybase.setScale(.005)
-        #self.enemybase.setH(180)
-
-        self.enemybase.setPos(7,7,0)
+        self.cannon = Actor("cannon.egg")
+        self.cannon.reparentTo(render)
+        self.turret = Actor("turret.egg")
+        self.turret.reparentTo(render)
+        
+        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.base.reparentTo(render)
+        
+        self.base.setPos(7,7,0)
         self.playerPos = [0,0,0]
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
@@ -32,11 +28,15 @@ class EnemyTank(DirectObject):  #use to create computer tank
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
+    def moveenemyBase(self,task):
+        self.base.setH(self.base.getH()+1)
+        return Task.cont
+
     def moveenemyTurret(self,task): #used so enemy turret is aimed at the player
-        #position = self.enemyturret.getPos()
-        xposition = self.enemyturret.getX() #Used to get current coordinates of the turret
-        yposition = self.enemyturret.getY()
-        zposition = self.enemyturret.getZ()
+        #position = self.turret.getPos()
+        xposition = self.turret.getX() #Used to get current coordinates of the turret
+        yposition = self.turret.getY()
+        zposition = self.turret.getZ()
         dx = self.playerPos[0]-xposition
         dy = self.playerPos[1]-yposition
         heading = rad2Deg(math.atan2(dy, dx))
@@ -62,16 +62,16 @@ class EnemyTank(DirectObject):  #use to create computer tank
         modifiedheading = heading+headingoffset
         modifiedpitch = pitch+pitchoffset
 
-        #self.enemycannon.setPos(self.enemybase.getX(),self.enemybase.getY(),self.enemybase.getZ())
-        self.enemycannon.setHpr(modifiedheading,modifiedpitch,0)
-        self.enemyturret.setHpr(modifiedheading-headingoffset,0,0)
-        self.enemyturret.setPos(self.enemybase.getX(),self.enemybase.getY(),self.enemybase.getZ())
+        #self.cannon.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
+        self.cannon.setHpr(modifiedheading,modifiedpitch,0)
+        self.turret.setHpr(modifiedheading-headingoffset,0,0)
+        self.turret.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
 
-        dist = self.enemycannon.getP()*-1 #When the cannon pitches upwards it moves backwards a bit...this fixes it...but I have no idea why it works
-        angle = deg2Rad(self.enemycannon.getH())
+        dist = self.cannon.getP()*-1 #When the cannon pitches upwards it moves backwards a bit...this fixes it...but I have no idea why it works
+        angle = deg2Rad(self.cannon.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
         dy = dist * -math.cos(angle)#Calculate change in y direction   
         dx = dx/40
         dy = dy/40
-        self.enemycannon.setPos(self.enemybase.getX()+dx,self.enemybase.getY()+dy,self.enemybase.getZ())
+        self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
         return Task.cont        
