@@ -132,6 +132,11 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.base.stop()
                 self.isMoving = False
 
+        if self.isMoving:
+            self.soundqueue.loop('engine', [self.base.getX()], [self.base.getY()], [self.base.getZ()])
+        else:
+            self.soundqueue.unloop('engine')
+
         self.moveplayerTurret()    
         self.prevtimeforPlayer = task.time
         return Task.cont              
