@@ -127,14 +127,16 @@ class PlayerTank(DirectObject): #use to create player tank
                 self.base.stop()
                 self.isMoving = False
 
-                           
-        self.prevtimeforBase = task.time        
+        self.moveplayerTurret()    
+        self.prevtimeforPlayer = task.time
+        return Task.cont              
+        #self.prevtimeforBase = task.time        
         
+    def moveplayerTurret(self):
         #Set Position on top of base:
         baseposition = self.base.getPos()
         self.turret.setPos(self.base.getX(),self.base.getY(),self.base.getZ())
         
-
         if base.mouseWatcherNode.hasMouse():        
             x=base.mouseWatcherNode.getMouseX() #get mouse coordinates
             y=base.mouseWatcherNode.getMouseY() 
@@ -153,8 +155,7 @@ class PlayerTank(DirectObject): #use to create player tank
             self.cannon.setH(deltaHeading)
             #self.turret.setP(deltaPitch)   #Animate change in pitch - this would be for the actual gun, if we were going to give it the ability to move up and down
             self.cannon.setP(deltaPitch)   #Animate change in pitch - this would be for the actual gun, if we were going to give it the ability to move up and down
-        
-        
+                
         dist = self.cannon.getP()*-1 #When the cannon pitches upwards it moves backwards a bit...this fixes it...but I have no idea why it works
         angle = deg2Rad(self.cannon.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
@@ -162,7 +163,6 @@ class PlayerTank(DirectObject): #use to create player tank
         dx = dx/40
         dy = dy/40
         self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
-
 
         position = self.cannon.getPos()
         xposition = self.cannon.getX() #Used to get current coordinates of the turret
@@ -173,7 +173,6 @@ class PlayerTank(DirectObject): #use to create player tank
         angle = deg2Rad(self.cannon.getH())
         dx = dist * math.sin(angle) #Calculate change in x direction
         dy = dist * -math.cos(angle)#Calculate change in y direction    
-
     
         dist = 15
         angle = deg2Rad(self.cannon.getP())
@@ -187,8 +186,6 @@ class PlayerTank(DirectObject): #use to create player tank
         pitch +=8
         camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
-        #position = self.turret.getPos()
-       
-        self.prevtimeforPlayer = task.time
+        #self.prevtimeforPlayer = task.time
         
-        return Task.cont #Continue updating this task
+        #return Task.cont #Continue updating this task

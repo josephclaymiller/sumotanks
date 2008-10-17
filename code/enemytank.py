@@ -28,12 +28,15 @@ class EnemyTank(DirectObject):  #use to create computer tank
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
-    def moveenemyBase(self,task):
+    def moveEnemy(self,task):
+        """Move enemy base and then the turret"""
+        #Put code to move base here:
         self.base.setH(self.base.getH()+1)
-        return Task.cont
 
-    def moveenemyTurret(self,task): #used so enemy turret is aimed at the player
-        #position = self.turret.getPos()
+        self.moveenemyTurret() #Move enemy turret (to keep the code separate, but still update both in the same frame
+        return Task.cont
+        
+    def moveenemyTurret(self): #used so enemy turret is aimed at the player
         xposition = self.turret.getX() #Used to get current coordinates of the turret
         yposition = self.turret.getY()
         zposition = self.turret.getZ()
@@ -74,4 +77,4 @@ class EnemyTank(DirectObject):  #use to create computer tank
         dx = dx/40
         dy = dy/40
         self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
-        return Task.cont        
+        
