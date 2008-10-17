@@ -5,14 +5,17 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
+from direct.filter.CommonFilters import CommonFilters
 import sys, math
-
 
 class World(DirectObject):
     def __init__(self):
         #pass
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0}        
 
+        #Sets up glow mapping based on alpha channel
+        self.filters = CommonFilters(base.win, base.cam)
+        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=10.0, size="small")
 
         self.setupLights()
         self.loadModels()
