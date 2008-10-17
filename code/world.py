@@ -27,6 +27,7 @@ class World(DirectObject):
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
+        taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
         
         self.accept("w", self.setKey, ["forward", 1])
         self.accept("s", self.setKey, ["back", 1])
@@ -48,6 +49,7 @@ class World(DirectObject):
         self.player.turret.getPos()
         playerPos = [self.player.turret.getX(),self.player.turret.getY(),self.player.turret.getZ()]
         self.computer.setplayerPos(playerPos)
+        self.soundqueue.setplayerPos(playerPos, self.player.turret.getH())
         return Task.cont
 
     def setupLights(self):
