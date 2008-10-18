@@ -7,6 +7,12 @@ from direct.task import Task
 import sys, math
 import random
 import world, entity
+    
+from direct.gui.OnscreenImage import OnscreenImage
+from pandac.PandaModules import TransparencyAttrib
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+
 
 import sys,os
 from pandac.PandaModules import Filename
@@ -45,6 +51,18 @@ class PlayerTank(entity.entity): #use to create player tank
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
 
+        self.crosshair = Actor("panda-model")
+        self.crosshair.reparentTo(render)
+        self.crosshair.setScale(.003)
+        self.crosshair.setH(180)
+
+        self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = aspect2d, pos=(0,0,0),scale=0.1)
+        #self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
+
+
+
+        self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
+
         self.maxspeed = 0
 
         entity.entity.__init__(self, 0, 0, 0, 5)
@@ -81,7 +99,8 @@ class PlayerTank(entity.entity): #use to create player tank
         position = self.turret.getPos()
         return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])
 
-    
+    
+
     def movePlayer(self,task):
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
@@ -131,6 +150,11 @@ class PlayerTank(entity.entity): #use to create player tank
             if self.isMoving:
                 self.base.stop()
                 self.isMoving = False
+
+        if self.isMoving:
+            self.soundqueue.loop('engine', [self.base.getX()], [self.base.getY()], [self.base.getZ()])
+        else:
+               self.isMoving = False
 
         if self.isMoving:
             self.soundqueue.loop('engine')
@@ -196,6 +220,36 @@ class PlayerTank(entity.entity): #use to create player tank
         pitch +=8
         camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
-        #self.prevtimeforPlayer = task.time
+        #Set Crosshair position
+        #dz = self.playerPos[2]-self.base.getZ()#zposition #distance in height
+
+        xvalues = (xposition+dx-xposition)  #Distance formula
+        yvalues = (yposition+dy-yposition)
+        xsquared = math.pow(xvalues,2)
+        ysquared = math.pow(yvalues,2)
+        distance = math.sqrt(xsquared+ysquared) 
+        pitch = self.cannon.getP()*-1
+        #pitch = rad2Deg(math.atan2(dz,distance)) 
+        pitch = deg2Rad(pitch)
+        dz = (math.tan(pitch)) * (distance)
+        #print dz
+        #pitch *=-1
+        #print dz
         
-        #return Task.cont #Continue updating this task
+        self.crosshair.setPosHpr(xposition+dx,yposition+dy,dz,self.turret.getH(),0,0)
+        # Convert the point into the camera's coordinate space 
+        p3d = base.cam.getRelativePoint(self.crosshair, Point3(self.crosshair.getX(),self.crosshair.getY(),self.crosshair.getZ()))
+        # Ask the lens to project the 3-d point to 2-d. 
+        p2d = Point2()        
+        if base.camLens.project(p3d, p2d):                                                                   
+            print p2d
+        #self.crosshair2d=OnscreenImage(image='crosshair.ong', pos=(p2d[0],0,p2d[1]))
+
+    
+
+
+
+
+
+
+
