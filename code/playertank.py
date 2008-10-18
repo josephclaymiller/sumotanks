@@ -133,7 +133,7 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.isMoving = False
 
         if self.isMoving:
-            self.soundqueue.loop('engine', [self.base.getX()], [self.base.getY()], [self.base.getZ()])
+            self.soundqueue.loop('engine')
         else:
             self.soundqueue.unloop('engine')
 

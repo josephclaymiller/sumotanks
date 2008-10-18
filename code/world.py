@@ -25,8 +25,9 @@ class World(DirectObject):
         self.accept("escape", sys.exit)
         self.player = playertank.PlayerTank()
         self.player.soundqueue = self.soundqueue
-        self.player.soundqueue.loop('idle', [self.player.base.getX()], [self.player.base.getY()], [self.player.base.getZ()])
         self.computer = enemytank.EnemyTank()
+        self.player.soundqueue.loop('idle')
+        self.player.soundqueue.loop('enemyengineidle')
         
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
@@ -37,12 +38,12 @@ class World(DirectObject):
         
         self.accept("w", self.setKey, ["forward", 1])
         self.accept("s", self.setKey, ["back", 1])
-        self.accept("a", self.setKey, ["left", 1]) 
-        self.accept("d", self.setKey, ["right", 1]) 
+        self.accept("a", self.setKey, ["left", 1])
+        self.accept("d", self.setKey, ["right", 1])
         self.accept("w-up", self.setKey, ["forward", 0])
-        self.accept("s-up", self.setKey, ["back", 0]) 
-        self.accept("a-up", self.setKey, ["left", 0]) 
-        self.accept("d-up", self.setKey, ["right", 0]) 
+        self.accept("s-up", self.setKey, ["back", 0])
+        self.accept("a-up", self.setKey, ["left", 0])
+        self.accept("d-up", self.setKey, ["right", 0])
         self.accept("h", self.player.toggleHeadlights)
         
      
@@ -55,7 +56,7 @@ class World(DirectObject):
         self.player.turret.getPos()
         playerPos = [self.player.turret.getX(),self.player.turret.getY(),self.player.turret.getZ()]
         self.computer.setplayerPos(playerPos)
-        self.soundqueue.setplayerPos(playerPos, self.player.turret.getH())
+        self.soundqueue.setplayerPos(playerPos, self.player.turret.getH(), [self.computer.turret.getX(),self.computer.turret.getY(),self.computer.turret.getZ()])
         return Task.cont
 
     def setupLights(self):
