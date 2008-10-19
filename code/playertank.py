@@ -56,7 +56,11 @@ class PlayerTank(entity.entity): #use to create player tank
         self.crosshair.setScale(.003)
         self.crosshair.setH(180)
 
-        self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = aspect2d, pos=(0,0,0),scale=0.1)
+        #self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = aspect2d, pos=(0,0,0),scale=0.1)
+        self.crosshair2d=OnscreenImage(image = "cannonblue.png", pos=(0,0,0),scale=0.1)
+
+        self.currentweapon = 1 #1 for cannon 2 for machine gun
+        
         #self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
 
 
@@ -152,7 +156,7 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.isMoving = False
 
         if self.isMoving:
-            self.soundqueue.loop('engine', [self.base.getX()], [self.base.getY()], [self.base.getZ()])
+            self.soundqueue.loop('engine')#, [self.base.getX()], [self.base.getY()], [self.base.getZ()])
         else:
                self.isMoving = False
 
@@ -220,31 +224,30 @@ class PlayerTank(entity.entity): #use to create player tank
         pitch +=8
         camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
-        #Set Crosshair position
-        #dz = self.playerPos[2]-self.base.getZ()#zposition #distance in height
-
+        #Set Crosshair position - If you are moving rediculously fast this gets out of alignment...I don't know why
+        
         xvalues = (xposition+dx-xposition)  #Distance formula
         yvalues = (yposition+dy-yposition)
         xsquared = math.pow(xvalues,2)
         ysquared = math.pow(yvalues,2)
         distance = math.sqrt(xsquared+ysquared) 
         pitch = self.cannon.getP()*-1
-        #pitch = rad2Deg(math.atan2(dz,distance)) 
         pitch = deg2Rad(pitch)
         dz = (math.tan(pitch)) * (distance)
-        #print dz
-        #pitch *=-1
-        #print dz
         
         self.crosshair.setPosHpr(xposition+dx,yposition+dy,dz,self.turret.getH(),0,0)
         # Convert the point into the camera's coordinate space 
         p3d = base.cam.getRelativePoint(self.crosshair, Point3(self.crosshair.getX(),self.crosshair.getY(),self.crosshair.getZ()))
         # Ask the lens to project the 3-d point to 2-d. 
-        p2d = Point2()        
-        if base.camLens.project(p3d, p2d):                                                                   
-            print p2d
-        #self.crosshair2d=OnscreenImage(image='crosshair.ong', pos=(p2d[0],0,p2d[1]))
-
+        p2d = Point2()
+                
+        if base.camLens.project(p3d, p2d):
+            self.crosshair2d.destroy()
+            if self.currentweapon == 1:
+                self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
+            elif self.currentweapon == 2:
+                self.crosshair2d=OnscreenImage(image = "cannonred.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
+        
     
 
 

@@ -45,7 +45,11 @@ class World(DirectObject):
         self.accept("a-up", self.setKey, ["left", 0])
         self.accept("d-up", self.setKey, ["right", 0])
         self.accept("h", self.player.toggleHeadlights)
+        self.accept("1", self.setWeapon,[1])
+        self.accept("2", self.setWeapon,[2])
         
+    def setWeapon(self, key):
+        self.player.currentweapon = key
      
     def setKey(self, key, value):
         self.keyMap[key] = value
