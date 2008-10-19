@@ -15,11 +15,11 @@ class SoundQueue():
         self.sounds = {
                 'boom':         loader.loadSfx("../art/sounds/long_boom.wav"),
                 'bang':         loader.loadSfx("../art/sounds/bang.wav"),
-                'engineoff':    loader.loadSfx("../art/sounds/engineoffq.wav")
+                'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav")
             }
 
         self.loops = {
-                'engine':           loader.loadSfx("../art/sounds/engineq.wav"),
+                'engine':           loader.loadSfx("../art/sounds/engine.wav"),
                 'enemyengineidle':  loader.loadSfx("../art/sounds/engineidle.wav"),
                 'idle':             loader.loadSfx("../art/sounds/engineidle.wav")
         }
