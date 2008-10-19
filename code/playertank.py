@@ -57,13 +57,10 @@ class PlayerTank(entity.entity): #use to create player tank
         self.crosshair.setH(180)
 
         #self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = aspect2d, pos=(0,0,0),scale=0.1)
-        self.crosshair2d=OnscreenImage(image = "cannonblue.png", pos=(0,0,0),scale=0.1)
-
-        self.currentweapon = 1 #1 for cannon 2 for machine gun
-        
+        self.crosshair2d = OnscreenImage(image = "cannonblue.png", pos=(0,0,0),scale=0.1)
         #self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
-
-
+        
+        self.currentweapon = 1 #1 for cannon 2 for machine gun
 
         self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
 
@@ -247,7 +244,7 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
             elif self.currentweapon == 2:
                 self.crosshair2d=OnscreenImage(image = "cannonred.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
-        
+            
     
 
 
