@@ -16,21 +16,24 @@ from direct.gui.DirectGui import *
 class World(DirectObject):
     def __init__(self):
         #pass
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0}        
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0}  
+
+        #Make mouse invisible
+        props = WindowProperties()
+        props.setCursorHidden(True) 
+        base.win.requestProperties(props)      
 
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
         filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=10.0, size="small")
-
-#        self.setupLights()
-#        self.loadModels()
-#        self.soundqueue = soundqueue.SoundQueue()
 
         self.accept("escape", sys.exit)
         self.player = playertank.PlayerTank()
         self.computer = enemytank.EnemyTank()
         self.spashscreen = OnscreenImage(image = "treadglow.png", pos=(0,0,0))
         self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
+        self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2)
+        self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2) 
 #        self.player.soundqueue.loop('idle')
 #        self.player.soundqueue.loop('enemyengineidle')
         
@@ -75,8 +78,9 @@ class World(DirectObject):
         taskMgr.add(self.updateHud, "updatehudTask")
 
     def updateHud(self,task):
-        self.playerhealth = OnscreenText(text = "Player Health goes here", pos = (-.5,.8), fg = (255, 255, 255, 1) )
-        self.enemyhealth = OnscreenText(text = "Enemy health goes here", pos = (.5,.8), fg = (255, 255, 255, 1))
+        self.player.damage +=1
+        self.playerhealth.setText(str(self.player.damage-1))
+        self.enemyhealth.setText(str(self.computer.damage-1))   
         return Task.cont
 
                 

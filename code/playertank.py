@@ -27,12 +27,16 @@ class PlayerTank(entity.entity): #use to create player tank
         self.isMoving = False
 
         self.cannon = Actor("cannon.egg")
+        self.cannon.setScale(.5)
         self.cannon.reparentTo(render)
         self.turret = Actor("turret.egg")
+        self.turret.setScale(.5)
         self.turret.reparentTo(render)
 
         self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.base.setScale(.5)        
         self.base.reparentTo(render)
+        
         self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
         self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
         self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
@@ -52,16 +56,15 @@ class PlayerTank(entity.entity): #use to create player tank
         self.prevtimeforBase = 0
 
         self.crosshair = Actor("panda-model")
-        self.crosshair.reparentTo(render)
-        self.crosshair.setScale(.003)
+        #self.crosshair.reparentTo(render)
+        self.crosshair.setScale(.000000001)
         self.crosshair.setH(180)
 
-        #self.crosshair2d=OnscreenImage(image = "ccrosshair.png",parent = aspect2d ,scale=0.1)
-        self.crosshair2d = OnscreenImage(image = "cannonblue.png", pos=(0,0,0),scale=0.1)
-        #self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
+        self.crosshair2d = OnscreenImage(image = "cannoncrosshair.png", pos=(0,0,0),scale=0.1)
+        self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
         
         self.currentweapon = 1 #1 for cannon 2 for machine gun
-
+        self.damage = 1
         self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
 
         self.maxspeed = 0
@@ -181,8 +184,8 @@ class PlayerTank(entity.entity): #use to create player tank
             deltaHeading = self.cannon.getH() + move[0] * -100 #Calculate change in heading
             deltaPitch = self.cannon.getP() + move[1] * -100   #Calculate change in pitch
 
-            if deltaPitch < -30:
-                deltaPitch = -30
+            if deltaPitch < -20:
+                deltaPitch = -20
             if deltaPitch > 0:
                 deltaPitch = 0           
 
@@ -234,17 +237,18 @@ class PlayerTank(entity.entity): #use to create player tank
         
         self.crosshair.setPosHpr(xposition+dx,yposition+dy,dz,self.turret.getH(),0,0)
         # Convert the point into the camera's coordinate space 
-        p3d = base.cam.getRelativePoint(self.crosshair, Point3(self.crosshair.getX(),self.crosshair.getY(),self.crosshair.getZ()))
+        p3d = base.camera.getRelativePoint(self.crosshair, Point3(self.crosshair.getX(),self.crosshair.getY(),self.crosshair.getZ()))
         # Ask the lens to project the 3-d point to 2-d. 
         p2d = Point2()
                 
         if base.camLens.project(p3d, p2d):
             self.crosshair2d.destroy()
             if self.currentweapon == 1:
-                self.crosshair2d=OnscreenImage(image = "ccrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)        
+                self.crosshair2d=OnscreenImage(image = "cannoncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
+                self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)        
             elif self.currentweapon == 2:
-                self.crosshair2d=OnscreenImage(image = "mgcrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
-            
+                self.crosshair2d=OnscreenImage(image = "machineguncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
+                self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
     
 
 
