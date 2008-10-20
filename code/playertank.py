@@ -56,7 +56,7 @@ class PlayerTank(entity.entity): #use to create player tank
         self.crosshair.setScale(.003)
         self.crosshair.setH(180)
 
-        #self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = aspect2d, pos=(0,0,0),scale=0.1)
+        #self.crosshair2d=OnscreenImage(image = "ccrosshair.png",parent = aspect2d ,scale=0.1)
         self.crosshair2d = OnscreenImage(image = "cannonblue.png", pos=(0,0,0),scale=0.1)
         #self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
         
@@ -213,7 +213,7 @@ class PlayerTank(entity.entity): #use to create player tank
         angle = deg2Rad(self.cannon.getP())
         dz = dist*math.tan(angle)   #Calculate change in pitch
     
-        pitch = self.cannon.getP()  #Set pitch of camera (limits it so player can only look so high and so low
+        pitch = self.cannon.getP()  #Set pitch of camera (limits it so player can only look so high and so low)
         if self.cannon.getP() > 8.6:
             pitch = 8.6
         if self.cannon.getP() < -8.6:
@@ -241,9 +241,9 @@ class PlayerTank(entity.entity): #use to create player tank
         if base.camLens.project(p3d, p2d):
             self.crosshair2d.destroy()
             if self.currentweapon == 1:
-                self.crosshair2d=OnscreenImage(image = "cannonblue.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
+                self.crosshair2d=OnscreenImage(image = "ccrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)        
             elif self.currentweapon == 2:
-                self.crosshair2d=OnscreenImage(image = "cannonred.png",parent = render2d, pos=(p2d[0],0,p2d[1]),scale=0.1)
+                self.crosshair2d=OnscreenImage(image = "mgcrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
             
     
 

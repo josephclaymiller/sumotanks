@@ -72,6 +72,12 @@ class World(DirectObject):
         taskMgr.add(self.computer.moveEnemy, "moveenemyTask")
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
+        taskMgr.add(self.updateHud, "updatehudTask")
+
+    def updateHud(self,task):
+        self.playerhealth = OnscreenText(text = "Player Health goes here", pos = (-.5,.8), fg = (255, 255, 255, 1) )
+        self.enemyhealth = OnscreenText(text = "Enemy health goes here", pos = (.5,.8), fg = (255, 255, 255, 1))
+        return Task.cont
 
                 
     def setWeapon(self, key):
@@ -106,7 +112,7 @@ class World(DirectObject):
         """Loads models/actors into the world"""
 
         #load environment
-        self.environment = loader.loadModel("models/environment")
+        self.environment = loader.loadModel("arena1.egg")
         self.environment.reparentTo(render)
-        self.environment.setScale(0.25)
-        self.environment.setPos(-8,42,0)
+#        self.environment.setScale(0.25)
+#        self.environment.setPos(-8,42,0)
