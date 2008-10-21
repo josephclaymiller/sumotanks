@@ -26,11 +26,13 @@ class World(DirectObject):
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
         filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=10.0, size="small")
+        self.soundqueue = soundqueue.SoundQueue()
+        self.soundqueue.loop('menumusic')
 
         self.accept("escape", sys.exit)
         self.player = playertank.PlayerTank()
         self.computer = enemytank.EnemyTank()
-        self.spashscreen = OnscreenImage(image = "treadglow.png", pos=(0,0,0))
+        self.spashscreen = OnscreenImage(image = "../art/tank/treadglow.png", pos=(0,0,0))
         self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
         self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2)
         self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2) 
@@ -67,10 +69,11 @@ class World(DirectObject):
         return Task.cont
         
     def startGame(self,task): #Put game tasks in here
+        self.soundqueue.unloop('menumusic')
         self.setupLights()
         self.loadModels()
-        self.soundqueue = soundqueue.SoundQueue()
         self.player.soundqueue = self.soundqueue
+        self.soundqueue.loop('music')
         self.player.soundqueue.loop('idle')
         self.player.soundqueue.loop('enemyengineidle')
         taskMgr.add(self.player.movePlayer, "moveplayerTask")

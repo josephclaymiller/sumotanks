@@ -21,7 +21,9 @@ class SoundQueue():
         self.loops = {
                 'engine':           loader.loadSfx("../art/sounds/engine.wav"),
                 'enemyengineidle':  loader.loadSfx("../art/sounds/engineidle.wav"),
-                'idle':             loader.loadSfx("../art/sounds/engineidle.wav")
+                'idle':             loader.loadSfx("../art/sounds/engineidle.wav"),
+                'music':            loader.loadSfx("../art/sounds/sumotanks.wav"),
+                'menumusic':        loader.loadSfx("../art/sounds/sumomenu.wav")
         }
 
         self.activeloops = []
