@@ -62,8 +62,12 @@ class PlayerTank(entity.entity): #use to create player tank
 
         self.crosshair2d = OnscreenImage(image = "cannoncrosshair.png", pos=(0,0,0),scale=0.1)
         self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
+
         
         self.currentweapon = 1 #1 for cannon 2 for machine gun
+        self.currentweaponimage = OnscreenImage(image = "cannonimage.png", pos=(-.99,0,.87),scale=.3)
+        self.currentweaponimage.setTransparency(TransparencyAttrib.MAlpha)
+
         self.damage = 1
         self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
 
@@ -74,6 +78,35 @@ class PlayerTank(entity.entity): #use to create player tank
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
+
+    def setTexture(self,key):
+        if key == 4: #Blue 
+            basetex = loader.loadTexture("newtankblue.png")
+            turrettex = loader.loadTexture("turretblue.png")
+            self.turret.setTexture(turrettex,1)
+            self.base.setTexture(basetex,1)
+        if key == 5: #Purple 
+            basetex = loader.loadTexture("newtankpurple.png")
+            turrettex = loader.loadTexture("turretpurple.png")
+            self.turret.setTexture(turrettex,1)
+            self.base.setTexture(basetex,1)
+        if key == 6: #Green
+            basetex = loader.loadTexture("newtankgreen.png")
+            turrettex = loader.loadTexture("turretgreen.png")
+            self.turret.setTexture(turrettex,1)
+            self.base.setTexture(basetex,1)
+        if key == 7: #Yellow 
+            basetex = loader.loadTexture("newtankyellow.png")
+            turrettex = loader.loadTexture("turretyellow.png")
+            self.turret.setTexture(turrettex,1)
+            self.base.setTexture(basetex,1)
+
+    
+    def setcurrentWeapon(self, weapon, image):
+        self.currentweaponimage.destroy()
+        self.currentweapon = weapon
+        self.currentweaponimage = OnscreenImage(image = image, pos=(-.99,0,.87),scale=.3)
+        self.currentweaponimage.setTransparency(TransparencyAttrib.MAlpha)
         
     def toggleHeadlights(self):
         if self.headlightstatus == 1: #Headlight is on...turn it off
@@ -186,8 +219,8 @@ class PlayerTank(entity.entity): #use to create player tank
 
             if deltaPitch < -20:
                 deltaPitch = -20
-            if deltaPitch > 0:
-                deltaPitch = 0           
+            if deltaPitch > 2:
+                deltaPitch = 2           
 
             self.turret.setH(deltaHeading) #Animate change in heading
             self.cannon.setH(deltaHeading)
@@ -219,10 +252,10 @@ class PlayerTank(entity.entity): #use to create player tank
         pitch = self.cannon.getP()  #Set pitch of camera (limits it so player can only look so high and so low)
         if self.cannon.getP() > 8.6:
             pitch = 8.6
-        if self.cannon.getP() < -8.6:
-            pitch = -8.6
-        pitch +=8
-        camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+6,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
+        if self.cannon.getP() < -4.6:
+            pitch = -4.6
+        pitch +=5
+        camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+5,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
         #Set Crosshair position - If you are moving rediculously fast this gets out of alignment...I don't know why
         

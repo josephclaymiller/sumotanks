@@ -4,7 +4,7 @@
   "maya2egg2008 -a model -o 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newturret.egg' 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newturret_temp.mb'"
 }
 <Texture> tankturret_phong1SG3.tref1 {
-  turrettexture.png
+  turretgreen.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }

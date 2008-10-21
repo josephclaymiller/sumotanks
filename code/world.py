@@ -51,8 +51,12 @@ class World(DirectObject):
         self.accept("h", self.player.toggleHeadlights)
         self.accept("1", self.setWeapon,[1])
         self.accept("2", self.setWeapon,[2])
-
-        
+        self.accept("4", self.player.setTexture,[4])
+        self.accept("5", self.player.setTexture,[5])
+        self.accept("6", self.player.setTexture,[6])
+        self.accept("7", self.player.setTexture,[7])
+        self.accept("8", self.player.setTexture,[8])
+       
     def splashScreen(self,task): #Put title tasks in here
         if self.keyMap["enter"]:
             self.pressenter.destroy()
@@ -76,6 +80,7 @@ class World(DirectObject):
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
         taskMgr.add(self.updateHud, "updatehudTask")
+        
 
     def updateHud(self,task):
         self.player.damage +=1
@@ -85,7 +90,10 @@ class World(DirectObject):
 
                 
     def setWeapon(self, key):
-        self.player.currentweapon = key
+        if key == 1: #Switch image to cannon
+            self.player.setcurrentWeapon(1,"cannonimage.png")
+        if key == 2: #Switch image to machinegun
+            self.player.setcurrentWeapon(2,"machinegunimage.png")
      
     def setKey(self, key, value):
         self.keyMap[key] = value
