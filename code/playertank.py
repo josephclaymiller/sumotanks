@@ -52,7 +52,8 @@ class PlayerTank(entity.entity): #use to create player tank
 
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "headlight":0}
     
-        self.prevtimeforTurret = 0        self.prevtimeforBase = 0
+        self.prevtimeforTurret = 0
+        self.prevtimeforBase = 0
 
         self.crosshair = Actor("panda-model")
         #self.crosshair.reparentTo(render)
@@ -70,7 +71,8 @@ class PlayerTank(entity.entity): #use to create player tank
         self.damage = 1
         self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
 
-        entity.entity.__init__(self, 5)
+        entity.entity.__init__(self, 5)
+
         self.prevtimeforPlayer = 0
 
     def setkeyMap(self, keyMap):
@@ -80,23 +82,38 @@ class PlayerTank(entity.entity): #use to create player tank
         if key == 4: #Blue 
             basetex = loader.loadTexture("newtankblue.png")
             turrettex = loader.loadTexture("turretblue.png")
+            cannontex = loader.loadTexture("gunblue.png")
+            self.cannon.setTexture(cannontex,1)
             self.turret.setTexture(turrettex,1)
             self.base.setTexture(basetex,1)
         if key == 5: #Purple 
             basetex = loader.loadTexture("newtankpurple.png")
             turrettex = loader.loadTexture("turretpurple.png")
+            cannontex = loader.loadTexture("gunpurple.png")
+            self.cannon.setTexture(cannontex,1)
             self.turret.setTexture(turrettex,1)
             self.base.setTexture(basetex,1)
         if key == 6: #Green
             basetex = loader.loadTexture("newtankgreen.png")
             turrettex = loader.loadTexture("turretgreen.png")
+            cannontex = loader.loadTexture("gungreen.png")
+            self.cannon.setTexture(cannontex,1)
             self.turret.setTexture(turrettex,1)
             self.base.setTexture(basetex,1)
         if key == 7: #Yellow 
             basetex = loader.loadTexture("newtankyellow.png")
             turrettex = loader.loadTexture("turretyellow.png")
+            cannontex = loader.loadTexture("gunyellow.png")
+            self.cannon.setTexture(cannontex,1)
             self.turret.setTexture(turrettex,1)
             self.base.setTexture(basetex,1)
+        if key == 8: #Red
+            basetex = loader.loadTexture("newtankred.png")
+            turrettex = loader.loadTexture("turretred.png")
+            cannontex = loader.loadTexture("gunred.png")
+            self.cannon.setTexture(cannontex,1)
+            self.turret.setTexture(turrettex,1)
+            self.base.setTexture(basetex,1)        
 
     
     def setcurrentWeapon(self, weapon, image):
@@ -141,10 +158,21 @@ class PlayerTank(entity.entity): #use to create player tank
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
         print "XV: ", self.vel.xcomp(), " YV: ", self.vel.ycomp()
         if self.keyMap["forward"]:
+<<<<<<< .mine
+            angle = self.base.getH()
+            self.move.magnitude = 1.3
+            self.move.angle = deg2Rad(angle-90)
+=======
             angle = self.base.getH()            self.move.magnitude = .53
             self.move.angle = deg2Rad(angle-90)
+>>>>>>> .r81
         elif self.keyMap["back"]:
+<<<<<<< .mine
+            angle = self.base.getH()
+            self.move.magnitude = -1.3
+=======
             angle = self.base.getH()            self.move.magnitude = -.53
+>>>>>>> .r81
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
             self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
@@ -267,11 +295,13 @@ class PlayerTank(entity.entity): #use to create player tank
                 
         if base.camLens.project(p3d, p2d):
             self.crosshair2d.destroy()
-            if self.currentweapon == 1:                self.crosshair2d=OnscreenImage(image = "cannoncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
+            if self.currentweapon == 1:
+                self.crosshair2d=OnscreenImage(image = "cannoncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
                 self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)        
             elif self.currentweapon == 2:
                 self.crosshair2d=OnscreenImage(image = "machineguncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
-                self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
+                self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
+
     
 
 
