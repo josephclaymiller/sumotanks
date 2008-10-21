@@ -13,14 +13,14 @@ class EnemyTank(DirectObject):  #use to create computer tank
         
 
         self.cannon = Actor("cannon.egg")
-        self.cannon.setScale(.5)
+        self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
         self.turret = Actor("turret.egg")
-        self.turret.setScale(.5)
+        self.turret.setScale(.75)
         self.turret.reparentTo(render)
         
         self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
-        self.base.setScale(.5)        
+        self.base.setScale(.75)        
         self.base.reparentTo(render)
         
         self.base.setPos(7,7,0)

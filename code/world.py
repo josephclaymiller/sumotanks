@@ -129,5 +129,5 @@ class World(DirectObject):
         #load environment
         self.environment = loader.loadModel("../art/arena/arena1.egg")
         self.environment.reparentTo(render)
-#        self.environment.setScale(0.25)
+        self.environment.setScale(4)
 #        self.environment.setPos(-8,42,0)

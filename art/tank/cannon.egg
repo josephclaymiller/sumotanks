@@ -4,7 +4,7 @@
   "maya2egg2008 -a model -o 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newcannon.egg' 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newcannon_temp.mb'"
 }
 <Texture> phong6SG.tref2 {
-  guntexture.png
+  gungreen.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }

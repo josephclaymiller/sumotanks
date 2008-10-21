@@ -27,14 +27,14 @@ class PlayerTank(entity.entity): #use to create player tank
         self.isMoving = False
 
         self.cannon = Actor("cannon.egg")
-        self.cannon.setScale(.5)
+        self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
         self.turret = Actor("turret.egg")
-        self.turret.setScale(.5)
+        self.turret.setScale(.75)
         self.turret.reparentTo(render)
 
         self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
-        self.base.setScale(.5)        
+        self.base.setScale(.75)        
         self.base.reparentTo(render)
         
         self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
@@ -158,21 +158,12 @@ class PlayerTank(entity.entity): #use to create player tank
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
         print "XV: ", self.vel.xcomp(), " YV: ", self.vel.ycomp()
         if self.keyMap["forward"]:
-<<<<<<< .mine
             angle = self.base.getH()
-            self.move.magnitude = 1.3
+            self.move.magnitude = .73
             self.move.angle = deg2Rad(angle-90)
-=======
-            angle = self.base.getH()            self.move.magnitude = .53
-            self.move.angle = deg2Rad(angle-90)
->>>>>>> .r81
         elif self.keyMap["back"]:
-<<<<<<< .mine
             angle = self.base.getH()
-            self.move.magnitude = -1.3
-=======
-            angle = self.base.getH()            self.move.magnitude = -.53
->>>>>>> .r81
+            self.move.magnitude = -.73
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
             self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
@@ -238,8 +229,8 @@ class PlayerTank(entity.entity): #use to create player tank
 
             if deltaPitch < -20:
                 deltaPitch = -20
-            if deltaPitch > 2:
-                deltaPitch = 2           
+            if deltaPitch > -1:
+                deltaPitch = -1           
 
             self.turret.setH(deltaHeading) #Animate change in heading
             self.cannon.setH(deltaHeading)
