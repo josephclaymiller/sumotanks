@@ -1,22 +1,50 @@
 #entity - a physics controlled object in the game world
 
-import sys
+import sys, math
 
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 
+class force():
+    def __init__(self, magnitude, angle):
+        self.magnitude = magnitude
+        self.angle = angle
 
-class entity(DirectObject):
-    def __init__( self, x, y, z, mass ):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.mass = mass*.006
+    def xcomp(self):
+        return self.magnitude * math.cos(self.angle)
 
-    def addForce(self, x, y, z):
-        self.x += x
-        self.y += y
-        self.z += z
+    def ycomp(self): 
+        return self.magnitude * math.sin(self.angle)
 
-    def getSpeed(self):
-        return (self.x/(self.mass+0.0), self.y/(self.mass+0.0), self.z/(self.mass+0.0))
+    def add(self, other):
+        x = self.xcomp() + other.xcomp()
+        y = self.ycomp() + other.ycomp()
+
+        angle = math.atan2(y,x)
+        magnitude = math.sqrt(math.pow(x,2) + math.pow(y,2))
+
+        return force(magnitude, angle)
+
+class entity():
+    def __init__(self, mass):
+        self.move = force(0,0)
+        self.mass = mass
+        self.acc = force(0,0)
+        self.vel = force(0,0)
+
+    def update(self):
+        """Calculates kinetic friction and drag, applies it, calculates 
+        new acc, then new vel"""
+        frictAngle = self.vel.angle
+        if self.vel.magnitude != 0:
+            frictMagnitude = -((3.1 * self.mass * 0.05) + ((1/(2.0))*1.3*math.pow(self.vel.magnitude,2)))
+        else:
+            frictMagnitude = 0
+        friction = force(frictMagnitude, frictAngle)
+
+        forces = self.move.add(friction)
+        self.acc = forces
+        self.acc.magnitude = self.acc.magnitude/(self.mass+0.0)
+
+        self.vel = self.vel.add(self.acc)
+

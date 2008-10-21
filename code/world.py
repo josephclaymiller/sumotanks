@@ -124,7 +124,7 @@ class World(DirectObject):
         """Loads models/actors into the world"""
 
         #load environment
-        self.environment = loader.loadModel("arena1.egg")
+        self.environment = loader.loadModel("../art/arena/arena1.egg")
         self.environment.reparentTo(render)
 #        self.environment.setScale(0.25)
 #        self.environment.setPos(-8,42,0)
