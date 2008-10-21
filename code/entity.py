@@ -47,6 +47,6 @@ class entity(DirectObject):
         self.acc.magnitude = self.acc.magnitude/(self.mass+0.0)
 
         self.vel = self.vel.add(self.acc)
-        if self.vel.magnitude < 0 and self.move.magnitude >= 0:
+        if self.vel.magnitude < 0.1 and self.move.magnitude >= 0:
             self.vel.magnitude = 0
 

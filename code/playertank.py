@@ -244,7 +244,7 @@ class PlayerTank(entity.entity): #use to create player tank
             print "IT FIRED!"
             print self.cannon.getP()
             shot = projectile.projectile(.1, self.vel.xcomp(), self.vel.ycomp(), deg2Rad(self.base.getH()-90), deg2Rad(self.cannon.getP()))
-            forces = entity.force(2, deg2Rad(self.cannon.getH()-90))
+            forces = entity.force(3-3*math.cos(self.cannon.getP()), deg2Rad(self.cannon.getH()-90))
             shot.vel = shot.vel.add(forces)
             shot.model.setPos(self.cannon.getX(), self.cannon.getY(), self.cannon.getZ())
             self.projectiles.append(shot)
