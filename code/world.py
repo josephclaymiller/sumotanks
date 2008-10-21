@@ -27,7 +27,7 @@ class World(DirectObject):
 
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
-        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=10.0, size="small")
+        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=1.5, size="small")
         self.soundqueue = soundqueue.SoundQueue()
         self.soundqueue.loop('menumusic')
 
@@ -60,6 +60,8 @@ class World(DirectObject):
         self.accept("a-up", self.setKey, ["left", 0])
         self.accept("d-up", self.setKey, ["right", 0])
         self.accept("enter", self.setKey, ["enter", 1])
+        self.accept("mouse1", self.setKey, ["fire", 1])
+        self.accept("mouse1-up", self.setKey, ["fire", 0])
         self.accept("h", self.player.toggleHeadlights)
         self.accept("1", self.setWeapon,[1])
         self.accept("2", self.setWeapon,[2])
@@ -73,8 +75,6 @@ class World(DirectObject):
         self.accept("i", self.computer.setenemyTexture,[6])
         self.accept("o", self.computer.setenemyTexture,[7])
         self.accept("p", self.computer.setenemyTexture,[8])
-        self.accept("mouse1", self.setKey, ["mouse1", 1])
-        self.accept("mouse2", self.setKey, ["mouse2", 1])
        
     def splashScreen(self,task): #Put title tasks in here
         if self.keyMap["enter"]:

@@ -4,17 +4,14 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-import sys, math
-import random
-import world, entity
     
 from direct.gui.OnscreenImage import OnscreenImage
 from pandac.PandaModules import TransparencyAttrib
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 
-
-import sys,os
+import sys, math, os, random
+import world, entity, projectile
 from pandac.PandaModules import Filename
 
 class PlayerTank(entity.entity): #use to create player tank
@@ -50,7 +47,7 @@ class PlayerTank(entity.entity): #use to create player tank
         self.zcameradistance = 15
         self.cannonmove = 5
 
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "headlight":0}
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "headlight":0, "fire":0}
     
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
@@ -71,11 +68,15 @@ class PlayerTank(entity.entity): #use to create player tank
         self.damage = 1
         self.crosshair3d = [] #Crosshair in 3d space (needs to be converted to 2d for drawing crosshair)
 
-        entity.entity.__init__(self, 5)
-
         self.prevtimeforPlayer = 0
 
         self.nodePath = self.addCollisionBoundaries()
+
+        self.projectiles = list()
+        self.fireCount = 60
+        self.fired = False
+
+        entity.entity.__init__(self, 5)
         
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
@@ -84,7 +85,7 @@ class PlayerTank(entity.entity): #use to create player tank
         cNode = CollisionNode("Player")
         cNode.addSolid(cSphere)
         cNP = self.base.attachNewNode(cNode)
-        cNP.show()
+        #cNP.show()
    
         base.cTrav.addCollider(cNP, self.cHandler)
         
@@ -231,12 +232,28 @@ class PlayerTank(entity.entity): #use to create player tank
         self.moveplayerTurret()    
         self.prevtimeforPlayer = task.time
         return Task.cont              
-        #self.prevtimeforBase = task.time
 
     def fire(self, task):
-        if self.keyMap["forward"]:
-            pass
-        pass
+        delta = task.time - self.prevtimeforPlayer
+        if self.fired:
+            self.fireCount -= 1
+            if self.fireCount == 0:
+                self.fireCount = 60
+                self.fired = False
+        if self.keyMap["fire"] and not self.fired:
+            print "IT FIRED!"
+            print self.cannon.getP()
+            shot = projectile.projectile(.1, self.vel.xcomp(), self.vel.ycomp(), deg2Rad(self.base.getH()-90), deg2Rad(self.cannon.getP()))
+            forces = entity.force(2, deg2Rad(self.cannon.getH()-90))
+            shot.vel = shot.vel.add(forces)
+            shot.model.setPos(self.cannon.getX(), self.cannon.getY(), self.cannon.getZ())
+            self.projectiles.append(shot)
+            self.fired = True
+        for i in range(len(self.projectiles)):
+            self.projectiles[i].zv -= .3
+            self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].vel.xcomp(), self.projectiles[i].model.getY() + self.projectiles[i].vel.ycomp(), self.projectiles[i].model.getZ() + self.projectiles[i].zv)
+        self.prevtimeforPlayer = task.time
+        return Task.cont
         
     def moveplayerTurret(self):
         #Set Position on top of base:

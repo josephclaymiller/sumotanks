@@ -79,7 +79,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         cNode = CollisionNode("Enemy")
         cNode.addSolid(cSphere)
         cNP = self.base.attachNewNode(cNode)
-        cNP.show()
+        #cNP.show()
         
         base.cTrav.addCollider(cNP, self.cHandler)
         
@@ -95,6 +95,9 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def moveEnemy(self,task):
         """Move enemy base and then the turret"""
+        self.update()
+        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
+
         #Put code to move base here:
         self.base.setH(self.base.getH()+1)
 
