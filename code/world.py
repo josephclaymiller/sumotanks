@@ -60,6 +60,8 @@ class World(DirectObject):
         self.accept("6", self.player.setTexture,[6])
         self.accept("7", self.player.setTexture,[7])
         self.accept("8", self.player.setTexture,[8])
+        self.accept("mouse1", self.setKey, ["mouse1", 1])
+        self.accept("mouse2", self.setKey, ["mouse2", 1])
        
     def splashScreen(self,task): #Put title tasks in here
         if self.keyMap["enter"]:
@@ -79,6 +81,7 @@ class World(DirectObject):
         self.player.soundqueue.loop('idle')
         self.player.soundqueue.loop('enemyengineidle')
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
+        taskMgr.add(self.player.fire, "fireTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         #taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")
         taskMgr.add(self.computer.moveEnemy, "moveenemyTask")

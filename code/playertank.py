@@ -175,15 +175,12 @@ class PlayerTank(entity.entity): #use to create player tank
     def movePlayer(self,task):
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
+        self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
-        print "XV: ", self.vel.xcomp(), " YV: ", self.vel.ycomp()
-        if self.keyMap["forward"]:
-            angle = self.base.getH()
-            self.move.magnitude = .73
+        if self.keyMap["forward"]:            angle = self.base.getH()            self.move.magnitude = 1.2
             self.move.angle = deg2Rad(angle-90)
-        elif self.keyMap["back"]:
-            angle = self.base.getH()
-            self.move.magnitude = -.73
+        elif self.keyMap["back"]:            angle = self.base.getH()
+            self.move.magnitude = -1.2
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
             self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
@@ -191,7 +188,6 @@ class PlayerTank(entity.entity): #use to create player tank
             self.base.setH(self.base.getH() - delta*100) #fiddle with this number to determine how fast it moves)
         if not self.keyMap["forward"] and not self.keyMap["back"]:
            self.move.magnitude = 0
-        self.update()
         #Code to determine animations:
         if self.keyMap["forward"]:
             if self.isMoving == False:
@@ -231,7 +227,12 @@ class PlayerTank(entity.entity): #use to create player tank
         self.moveplayerTurret()    
         self.prevtimeforPlayer = task.time
         return Task.cont              
-        #self.prevtimeforBase = task.time        
+        #self.prevtimeforBase = task.time
+
+    def fire(self, task):
+        if self.keyMap["forward"]:
+            pass
+        pass
         
     def moveplayerTurret(self):
         #Set Position on top of base:

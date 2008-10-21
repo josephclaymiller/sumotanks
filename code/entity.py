@@ -37,7 +37,7 @@ class entity(DirectObject):
         new acc, then new vel"""
         frictAngle = self.vel.angle
         if self.vel.magnitude != 0:
-            frictMagnitude = -((2 * self.mass * 0.05) + ((1/(2.0))*1.3*math.pow(self.vel.magnitude,2)))
+            frictMagnitude = -((4.5 * self.mass * 0.05) + ((1/(2.0))*1.3*math.pow(self.vel.magnitude,2)))
         else:
             frictMagnitude = 0
         friction = force(frictMagnitude, frictAngle)
@@ -47,4 +47,6 @@ class entity(DirectObject):
         self.acc.magnitude = self.acc.magnitude/(self.mass+0.0)
 
         self.vel = self.vel.add(self.acc)
+        if self.vel.magnitude < 0 and self.move.magnitude >= 0:
+            self.vel.magnitude = 0
 
