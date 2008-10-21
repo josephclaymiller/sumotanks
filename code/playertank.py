@@ -101,6 +101,8 @@ class PlayerTank(entity.entity): #use to create player tank
     def setTexture(self,key):
         basepos = self.base.getPos()
         basehpr = self.base.getHpr()
+        turrethpr = self.turret.getHpr()
+        cannonhpr = self.cannon.getHpr()
         self.base.delete()
         self.turret.delete()
         self.cannon.delete()
@@ -129,12 +131,11 @@ class PlayerTank(entity.entity): #use to create player tank
         self.base.setPosHpr(basepos,basehpr)
         self.turret.setScale(.75)
         self.turret.reparentTo(render)
+        self.turret.setHpr(turrethpr)
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
+        self.cannon.setHpr(cannonhpr)
         self.nodePath = self.addCollisionBoundaries()
-
-           
-
     
     def setcurrentWeapon(self, weapon, image):
         self.currentweaponimage.destroy()

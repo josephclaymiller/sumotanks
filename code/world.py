@@ -68,6 +68,11 @@ class World(DirectObject):
         self.accept("6", self.player.setTexture,[6])
         self.accept("7", self.player.setTexture,[7])
         self.accept("8", self.player.setTexture,[8])
+        self.accept("y", self.computer.setenemyTexture,[4])
+        self.accept("u", self.computer.setenemyTexture,[5])
+        self.accept("i", self.computer.setenemyTexture,[6])
+        self.accept("o", self.computer.setenemyTexture,[7])
+        self.accept("p", self.computer.setenemyTexture,[8])
         self.accept("mouse1", self.setKey, ["mouse1", 1])
         self.accept("mouse2", self.setKey, ["mouse2", 1])
        

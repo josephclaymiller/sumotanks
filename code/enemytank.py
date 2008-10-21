@@ -32,6 +32,45 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.damage = 1
         
         self.nodePath = self.addCollisionBoundaries()
+
+    def setenemyTexture(self,key):
+        basepos = self.base.getPos()
+        basehpr = self.base.getHpr()
+        turrethpr = self.turret.getHpr()
+        cannonhpr = self.cannon.getHpr()
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+        if key == 4: #Blue 
+            self.base = Actor("baseblue.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretblue.egg")
+            self.cannon = Actor("cannonblue.egg")
+        if key == 5: #Purple 
+            self.base = Actor("basepurple.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretpurple.egg")
+            self.cannon = Actor("cannonpurple.egg")
+        if key == 6: #Green
+            self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretgreen.egg")
+            self.cannon = Actor("cannongreen.egg")
+        if key == 7: #Yellow
+            self.base = Actor("baseyellow.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretyellow.egg")
+            self.cannon = Actor("cannonyellow.egg")
+        if key == 8: #Red
+            self.base = Actor("basered.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretred.egg")
+            self.cannon = Actor("cannonred.egg")
+        self.base.setScale(.75)        
+        self.base.reparentTo(render)
+        self.base.setPosHpr(basepos,basehpr)
+        self.turret.setScale(.75)
+        self.turret.reparentTo(render)
+        self.turret.setHpr(turrethpr)
+        self.cannon.setScale(.75)
+        self.cannon.reparentTo(render)
+        self.cannon.setHpr(cannonhpr)
+        self.nodePath = self.addCollisionBoundaries()
         
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
