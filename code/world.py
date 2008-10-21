@@ -18,7 +18,7 @@ class World(DirectObject):
         #pass
         base.cTrav = CollisionTraverser('traverser')
         
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0}  
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0, "fire":0}  
 
         #Make mouse invisible
         props = WindowProperties()
@@ -27,7 +27,7 @@ class World(DirectObject):
 
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
-        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=1.5, size="small")
+        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=3, size="small")
         self.soundqueue = soundqueue.SoundQueue()
         self.soundqueue.loop('menumusic')
 
@@ -35,7 +35,7 @@ class World(DirectObject):
         self.hud = OnscreenImage(image = "hud.png", pos=(0,0,.85),scale = (1.35,0,.157))
         self.treadglow = OnscreenImage(image = "../art/tank/treadglow.png", pos=(0,0,0))
         self.tankglow = OnscreenImage(image = "../art/tank/newtankglow.png", pos=(0,0,0))
-        #self.turretglow = OnscreenImage(image = "../art/tank/turretglow.png", pos=(0,0,0))
+        self.turretglow = OnscreenImage(image = "../art/tank/turretglow.png", pos=(0,0,0))
         self.wheelglow = OnscreenImage(image = "../art/tank/wheelglow.png", pos=(0,0,0))
         self.cannonglow = OnscreenImage(image = "../art/tank/cannonglow.png", pos=(0,0,0))
         self.mgglow = OnscreenImage(image = "../art/tank/gunglow.png", pos=(0,0,0))
@@ -82,7 +82,7 @@ class World(DirectObject):
             self.spashscreen.destroy()
             self.treadglow.destroy()
             self.tankglow.destroy()
-            #self.turretglow.destroy()
+            self.turretglow.destroy()
             self.wheelglow.destroy()
             self.cannonglow.destroy()
             self.mgglow.destroy()

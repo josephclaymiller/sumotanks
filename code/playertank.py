@@ -11,7 +11,8 @@ from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 
 import sys, math, os, random
-import world, entity, projectile
+import world, entity, projectile
+
 from pandac.PandaModules import Filename
 
 class PlayerTank(entity.entity): #use to create player tank
@@ -253,7 +254,8 @@ class PlayerTank(entity.entity): #use to create player tank
             self.projectiles[i].zv -= .3
             self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].vel.xcomp(), self.projectiles[i].model.getY() + self.projectiles[i].vel.ycomp(), self.projectiles[i].model.getZ() + self.projectiles[i].zv)
         self.prevtimeforPlayer = task.time
-        return Task.cont
+        return Task.cont
+
         
     def moveplayerTurret(self):
         #Set Position on top of base:
