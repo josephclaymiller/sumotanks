@@ -4,7 +4,7 @@
   "maya2egg2008 -a both -o newtankforwardanim.egg newtankforward.mb"
 }
 <Texture> phong3SG.tref2 {
-  treadgreen.png
+  treadyellow.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
@@ -21,7 +21,7 @@
   <Scalar> envtype { glow }
 }
 <Texture> phong2SG.tref3 {
-  wheelgreen.png
+  wheelyellow.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
@@ -38,7 +38,7 @@
   <Scalar> envtype { glow }
 }
 <Texture> phong1SG.tref1 {
-  newtankgreen.png
+  newtankyellow.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
