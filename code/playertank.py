@@ -141,10 +141,10 @@ class PlayerTank(entity.entity): #use to create player tank
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
         print "XV: ", self.vel.xcomp(), " YV: ", self.vel.ycomp()
         if self.keyMap["forward"]:
-            angle = self.base.getH()            self.move.magnitude = 1.3
+            angle = self.base.getH()            self.move.magnitude = .53
             self.move.angle = deg2Rad(angle-90)
         elif self.keyMap["back"]:
-            angle = self.base.getH()            self.move.magnitude = -1.3
+            angle = self.base.getH()            self.move.magnitude = -.53
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
             self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
