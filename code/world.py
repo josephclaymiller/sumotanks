@@ -32,12 +32,20 @@ class World(DirectObject):
         self.soundqueue.loop('menumusic')
 
         self.accept("escape", sys.exit)
+        self.hud = OnscreenImage(image = "hud.png", pos=(0,0,.85),scale = (1.35,0,.157))
+        self.treadglow = OnscreenImage(image = "../art/tank/treadglow.png", pos=(0,0,0))
+        self.tankglow = OnscreenImage(image = "../art/tank/newtankglow.png", pos=(0,0,0))
+        #self.turretglow = OnscreenImage(image = "../art/tank/turretglow.png", pos=(0,0,0))
+        self.wheelglow = OnscreenImage(image = "../art/tank/wheelglow.png", pos=(0,0,0))
+        self.cannonglow = OnscreenImage(image = "../art/tank/cannonglow.png", pos=(0,0,0))
+        self.mgglow = OnscreenImage(image = "../art/tank/gunglow.png", pos=(0,0,0))
+        #self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
         self.player = playertank.PlayerTank()
         self.computer = enemytank.EnemyTank()
-        self.spashscreen = OnscreenImage(image = "../art/tank/treadglow.png", pos=(0,0,0))
-        self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
         self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2)
         self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2) 
+        self.spashscreen = OnscreenImage(image = "summotankstitlescreen.png", pos=(0,0,0),scale = (1.35,1,1))
+        
 #        self.player.soundqueue.loop('idle')
 #        self.player.soundqueue.loop('enemyengineidle')
         
@@ -65,8 +73,14 @@ class World(DirectObject):
        
     def splashScreen(self,task): #Put title tasks in here
         if self.keyMap["enter"]:
-            self.pressenter.destroy()
+            #self.pressenter.destroy()
             self.spashscreen.destroy()
+            self.treadglow.destroy()
+            self.tankglow.destroy()
+            #self.turretglow.destroy()
+            self.wheelglow.destroy()
+            self.cannonglow.destroy()
+            self.mgglow.destroy()
             return Task.done
         else:
             pass
@@ -101,8 +115,8 @@ class World(DirectObject):
         if key == 1: #Switch image to cannon
             self.player.setcurrentWeapon(1,"cannonimage.png")
         if key == 2: #Switch image to machinegun
-            self.player.setcurrentWeapon(2,"machinegunimage.png")
-     
+            self.player.setcurrentWeapon(2,"machinegunimage.png")   
+
     def setKey(self, key, value):
         self.keyMap[key] = value
         self.player.setkeyMap(self.keyMap)

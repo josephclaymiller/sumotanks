@@ -11,14 +11,14 @@ import world
      
 class EnemyTank(entity.entity):  #use to create computer tank
     def __init__(self):
-        self.cannon = Actor("cannon.egg")
+        self.cannon = Actor("cannongreen.egg")
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
-        self.turret = Actor("turret.egg")
+        self.turret = Actor("turretgreen.egg")
         self.turret.setScale(.75)
         self.turret.reparentTo(render)
         
-        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.setScale(.75)        
         self.base.reparentTo(render)
         

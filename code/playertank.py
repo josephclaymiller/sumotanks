@@ -26,14 +26,14 @@ class PlayerTank(entity.entity): #use to create player tank
         #If there is a more convenient way to do this feel free
         self.isMoving = False
 
-        self.cannon = Actor("cannon.egg")
+        self.cannon = Actor("cannongreen.egg")
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
-        self.turret = Actor("turret.egg")
+        self.turret = Actor("turretgreen.egg")
         self.turret.setScale(.75)
         self.turret.reparentTo(render)
 
-        self.base = Actor("base.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.setScale(.75)        
         self.base.reparentTo(render)
         
@@ -99,41 +99,41 @@ class PlayerTank(entity.entity): #use to create player tank
         self.keyMap = keyMap
 
     def setTexture(self,key):
+        basepos = self.base.getPos()
+        basehpr = self.base.getHpr()
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
         if key == 4: #Blue 
-            basetex = loader.loadTexture("newtankblue.png")
-            turrettex = loader.loadTexture("turretblue.png")
-            cannontex = loader.loadTexture("gunblue.png")
-            self.cannon.setTexture(cannontex,1)
-            self.turret.setTexture(turrettex,1)
-            self.base.setTexture(basetex,1)
+            self.base = Actor("baseblue.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretblue.egg")
+            self.cannon = Actor("cannonblue.egg")
         if key == 5: #Purple 
-            basetex = loader.loadTexture("newtankpurple.png")
-            turrettex = loader.loadTexture("turretpurple.png")
-            cannontex = loader.loadTexture("gunpurple.png")
-            self.cannon.setTexture(cannontex,1)
-            self.turret.setTexture(turrettex,1)
-            self.base.setTexture(basetex,1)
+            self.base = Actor("basepurple.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretpurple.egg")
+            self.cannon = Actor("cannonpurple.egg")
         if key == 6: #Green
-            basetex = loader.loadTexture("newtankgreen.png")
-            turrettex = loader.loadTexture("turretgreen.png")
-            cannontex = loader.loadTexture("gungreen.png")
-            self.cannon.setTexture(cannontex,1)
-            self.turret.setTexture(turrettex,1)
-            self.base.setTexture(basetex,1)
-        if key == 7: #Yellow 
-            basetex = loader.loadTexture("newtankyellow.png")
-            turrettex = loader.loadTexture("turretyellow.png")
-            cannontex = loader.loadTexture("gunyellow.png")
-            self.cannon.setTexture(cannontex,1)
-            self.turret.setTexture(turrettex,1)
-            self.base.setTexture(basetex,1)
+            self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretgreen.egg")
+            self.cannon = Actor("cannongreen.egg")
+        if key == 7: #Yellow
+            self.base = Actor("baseyellow.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretyellow.egg")
+            self.cannon = Actor("cannonyellow.egg")
         if key == 8: #Red
-            basetex = loader.loadTexture("newtankred.png")
-            turrettex = loader.loadTexture("turretred.png")
-            cannontex = loader.loadTexture("gunred.png")
-            self.cannon.setTexture(cannontex,1)
-            self.turret.setTexture(turrettex,1)
-            self.base.setTexture(basetex,1)        
+            self.base = Actor("basered.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+            self.turret = Actor("turretred.egg")
+            self.cannon = Actor("cannonred.egg")
+        self.base.setScale(.75)        
+        self.base.reparentTo(render)
+        self.base.setPosHpr(basepos,basehpr)
+        self.turret.setScale(.75)
+        self.turret.reparentTo(render)
+        self.cannon.setScale(.75)
+        self.cannon.reparentTo(render)
+        self.nodePath = self.addCollisionBoundaries()
+
+           
 
     
     def setcurrentWeapon(self, weapon, image):
@@ -177,9 +177,12 @@ class PlayerTank(entity.entity): #use to create player tank
         delta = task.time - self.prevtimeforPlayer
         self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
-        if self.keyMap["forward"]:            angle = self.base.getH()            self.move.magnitude = 1.2
+        if self.keyMap["forward"]:
+            angle = self.base.getH()
+            self.move.magnitude = 1.2
             self.move.angle = deg2Rad(angle-90)
-        elif self.keyMap["back"]:            angle = self.base.getH()
+        elif self.keyMap["back"]:
+            angle = self.base.getH()
             self.move.magnitude = -1.2
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
