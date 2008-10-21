@@ -27,7 +27,7 @@ class World(DirectObject):
 
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
-        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=3, size="small")
+        filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=2.2, size="small")
         self.soundqueue = soundqueue.SoundQueue()
         self.soundqueue.loop('menumusic')
 

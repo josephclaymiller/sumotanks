@@ -1,5 +1,4 @@
 import entity
-
 import sys, math
 
 from pandac.PandaModules import *
