@@ -75,6 +75,26 @@ class PlayerTank(entity.entity): #use to create player tank
 
         self.prevtimeforPlayer = 0
 
+        self.nodePath = self.addCollisionBoundaries()
+        
+    def addCollisionBoundaries(self):
+        self.cHandler = CollisionHandlerEvent()
+        self.cHandler.setInPattern("hit-%in")
+        cSphere = CollisionSphere(0, 0, 0, 3)
+        cNode = CollisionNode("Player")
+        cNode.addSolid(cSphere)
+        cNP = self.base.attachNewNode(cNode)
+        cNP.show()
+   
+        base.cTrav.addCollider(cNP, self.cHandler)
+        
+        self.accept("hit-Enemy", self.hitEnemy)
+        
+        return cNP
+        
+    def hitEnemy(self, entry):
+        print "Player hit enemy"
+
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
 

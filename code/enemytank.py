@@ -4,14 +4,13 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
+import entity
 import sys, math
 import random
 import world
      
-class EnemyTank(DirectObject):  #use to create computer tank
+class EnemyTank(entity.entity):  #use to create computer tank
     def __init__(self):
-        
-
         self.cannon = Actor("cannon.egg")
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
@@ -23,13 +22,35 @@ class EnemyTank(DirectObject):  #use to create computer tank
         self.base.setScale(.75)        
         self.base.reparentTo(render)
         
+        entity.entity.__init__(self, 5)
+        self.base.setName("enemy")
         self.base.setPos(7,7,0)
         self.playerPos = [0,0,0]
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
 
         self.damage = 1
-
+        
+        self.nodePath = self.addCollisionBoundaries()
+        
+    def addCollisionBoundaries(self):
+        self.cHandler = CollisionHandlerEvent()
+        self.cHandler.setInPattern("hit-%in")
+        cSphere = CollisionSphere(0, 0, 0, 3)
+        cNode = CollisionNode("Enemy")
+        cNode.addSolid(cSphere)
+        cNP = self.base.attachNewNode(cNode)
+        cNP.show()
+        
+        base.cTrav.addCollider(cNP, self.cHandler)
+        
+        self.accept("hit-Player", self.hitPlayer)
+        
+        return cNP
+    
+    def hitPlayer(self, entry):
+        print "Enemy hit player"
+    
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
@@ -83,3 +104,6 @@ class EnemyTank(DirectObject):  #use to create computer tank
         dy = dy/40
         self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
         
+
+	def shootatPlayer(self):
+		pass;

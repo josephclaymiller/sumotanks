@@ -25,7 +25,7 @@ class force():
 
         return force(magnitude, angle)
 
-class entity():
+class entity(DirectObject):
     def __init__(self, mass):
         self.move = force(0,0)
         self.mass = mass

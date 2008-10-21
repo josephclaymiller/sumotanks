@@ -16,6 +16,8 @@ from direct.gui.DirectGui import *
 class World(DirectObject):
     def __init__(self):
         #pass
+        base.cTrav = CollisionTraverser('traverser')
+        
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0}  
 
         #Make mouse invisible
