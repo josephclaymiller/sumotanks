@@ -1,9 +1,9 @@
 <CoordinateSystem> { Y-Up }
 
 <Comment> {
-  "maya2egg2008 -a model -o turret.egg newturret.mb"
+  "maya2egg2008 -a model -o 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newturret.egg' 'C:/Documents and Settings/millem3/Desktop/sumotanks/art/tank/newturret_temp.mb'"
 }
-<Texture> tankturret_phong1SG3 {
+<Texture> tankturret_phong1SG3.tref1 {
   turrettexture.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
@@ -11,7 +11,16 @@
   <Scalar> minfilter { linear_mipmap_linear }
   <Scalar> magfilter { linear }
 }
-<Group> newturret {
+<Texture> tankturret_phong1SG3 {
+  turretglow.PNG
+  <Scalar> format { alpha }
+  <Scalar> wrapu { repeat }
+  <Scalar> wrapv { repeat }
+  <Scalar> minfilter { linear_mipmap_linear }
+  <Scalar> magfilter { linear }
+  <Scalar> envtype { glow }
+}
+<Group> newturret_temp {
   <Dart> { 1 }
   <Group> groundPlane_transform {
   }
@@ -788,216 +797,259 @@
     }
     <Polygon> {
       <Normal> { 0 1 0 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 0 1 2 3 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.860064 0.510186 0 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 1 4 5 2 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.974518 -0.224309 0 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 6 7 8 9 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.974518 -0.224309 0 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 10 11 12 13 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.860064 0.510186 0 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 14 0 3 15 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 8.56234e-008 0.153153 -0.988202 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 16 17 18 19 20 21 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.733074 0.547173 0.403985 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 15 3 22 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.951583 0.200432 0.23306 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 23 24 25 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0 0.931109 -0.36474 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 3 2 26 27 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.733074 0.547174 0.403984 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 5 28 2 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.951514 0.200634 0.233166 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 29 30 31 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.478414 0.00311594 0.878129 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 32 33 34 35 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.478415 0.00311578 0.878128 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 36 37 38 39 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -3.28524e-007 -0.262694 0.964879 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 33 40 34 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -8.65459e-008 -1 -1.3776e-007 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 41 42 43 44 45 46 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -3.49031e-007 -0.98669 -0.162614 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 47 48 49 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -1.00887e-007 -0.262694 0.964879 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 36 39 50 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.924621 -0.33013 0.189973 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 51 52 53 54 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -6.08765e-007 -0.584543 0.811363 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 55 56 57 58 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.924502 -0.330382 0.190114 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 59 60 61 62 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.992554 -0.0229085 0.119632 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 63 64 65 66 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.992554 -0.0229082 0.119636 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 67 68 69 70 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.888021 0.385841 0.250091 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 71 72 73 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.888023 0.385844 0.25008 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 74 75 76 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.76122 -0.612835 0.212079 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 77 78 79 80 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -2.71806e-006 -0.882031 0.471191 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 81 82 83 84 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.761147 -0.612933 0.212058 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 85 86 87 88 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.990616 0.0674379 -0.118881 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 89 90 91 92 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.990616 0.0674391 -0.118881 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 93 94 95 96 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.873317 0.426776 -0.234902 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 97 98 99 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.873317 0.426777 -0.234902 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 100 101 102 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 2.94868e-007 -0.403701 0.914891 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 103 104 105 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -2.89208e-007 -0.554395 0.832253 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 105 104 106 107 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.712917 0.388635 0.583705 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 108 109 110 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.712916 0.388638 0.583704 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 111 112 113 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.155239 0.969933 0.18743 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 114 115 116 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.15524 0.969933 0.18743 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 117 118 119 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.374782 0.00665839 -0.927089 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 120 121 16 21 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -4.60968e-008 -0.49309 -0.869978 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 121 122 17 16 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.374782 0.00665855 -0.927089 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 122 123 18 17 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { -0.346619 0.380364 -0.857425 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 123 124 19 18 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0 0.564236 -0.825613 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 1 0 125 126 <Ref> { turretShape.verts } }
     }
     <Polygon> {
       <Normal> { 0.346619 0.380364 -0.857425 }
+      <TRef> { tankturret_phong1SG3.tref1 }
       <TRef> { tankturret_phong1SG3 }
       <VertexRef> { 127 120 21 20 <Ref> { turretShape.verts } }
     }
