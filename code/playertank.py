@@ -63,7 +63,7 @@ class PlayerTank(entity.entity): #use to create player tank
 
         
         self.currentweapon = 1 #1 for cannon 2 for machine gun
-        self.currentweaponimage = OnscreenImage(image = "cannonimage.png", pos=(-.99,0,.87),scale=.3)
+        self.currentweaponimage = OnscreenImage(image = "cannonimage.png", pos=(-.99,0,.92),scale=.3)
         self.currentweaponimage.setTransparency(TransparencyAttrib.MAlpha)
 
         self.damage = 1
@@ -142,7 +142,7 @@ class PlayerTank(entity.entity): #use to create player tank
     def setcurrentWeapon(self, weapon, image):
         self.currentweaponimage.destroy()
         self.currentweapon = weapon
-        self.currentweaponimage = OnscreenImage(image = image, pos=(-.99,0,.87),scale=.3)
+        self.currentweaponimage = OnscreenImage(image = image, pos=(-.99,0,.92),scale=.3)
         self.currentweaponimage.setTransparency(TransparencyAttrib.MAlpha)
         
     def toggleHeadlights(self):
@@ -196,23 +196,24 @@ class PlayerTank(entity.entity): #use to create player tank
            self.move.magnitude = 0
         #Code to determine animations:
         if self.keyMap["forward"]:
+            
             if self.isMoving == False:
-                self.moveforwardscontrol.setPlayRate(10)#set play rate for moveforwards animation
+                self.moveforwardscontrol.setPlayRate(4)#set play rate for moveforwards animation
                 self.base.loop("moveforwards")
                 self.isMoving = True
         elif self.keyMap["back"]:
             if self.isMoving == False:
-                self.movebackwardsscontrol.setPlayRate(10)#set play rate for movebackwards animation
+                self.movebackwardsscontrol.setPlayRate(4)#set play rate for movebackwards animation
                 self.base.loop("movebackwards")
                 self.isMoving = True
         elif self.keyMap["left"]:
             if self.isMoving == False:
-                self.turnleftcontrol.setPlayRate(10)#set play rate for turnleft animation
+                self.turnleftcontrol.setPlayRate(4)#set play rate for turnleft animation
                 self.base.loop("turnleft")
                 self.isMoving = True
         elif self.keyMap["right"]:
             if self.isMoving == False:
-                self.turnrightcontrol.setPlayRate(10)#set play rate for turnright animation
+                self.turnrightcontrol.setPlayRate(4)#set play rate for turnright animation
                 self.base.loop("turnright")
                 self.isMoving = True
         else:
