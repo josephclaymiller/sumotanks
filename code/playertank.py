@@ -77,8 +77,10 @@ class PlayerTank(entity.entity): #use to create player tank
         self.nodePath = self.addCollisionBoundaries()
 
         self.projectiles = list()
-        self.fireCount = 60
-        self.fired = False
+        self.fireCountCannon = 60
+        self.fireCountMG = 10
+        self.firedCannon = False
+        self.firedMG = False
         
         entity.entity.__init__(self, 5)
         
@@ -95,7 +97,7 @@ class PlayerTank(entity.entity): #use to create player tank
         
         self.accept("hit-Enemy", self.world.playerHitEnemy)
         return cNP
-        
+       
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
@@ -242,17 +244,22 @@ class PlayerTank(entity.entity): #use to create player tank
     def fire(self, task):
         delta = task.time - self.prevtimeforPlayer
         #print "Turret Pos: ", self.turret.getPos()
-        if self.fired:
-            self.fireCount -= 1
-            if self.fireCount == 0:
-                self.fireCount = 60
-                self.fired = False
-        if self.keyMap["fire"] and not self.fired:
-            print "IT FIRED!"
-            print "Pitch: ",deg2Rad(self.cannon.getP())
-            print "Heading: ",deg2Rad(self.cannon.getH())
+        if self.firedCannon:
+            self.fireCountCannon -= 1
+            if self.fireCountCannon == 0:
+                self.fireCountCannon = 60
+                self.firedCannon = False
+        if self.firedMG:
+            self.fireCountMG -= 1
+            if self.fireCountMG == 0:
+                self.fireCountMG = 10
+                self.firedMG = False
+        if self.keyMap["fire"] and not self.firedCannon:
             lenCannon = 1
-            shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90) )
+            if self.currentweapon == 1:
+                shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )
+            else:
+                shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 2 )
             shot.velx += self.vel.xcomp()
             shot.vely += self.vel.ycomp()
 
@@ -262,10 +269,13 @@ class PlayerTank(entity.entity): #use to create player tank
             tipz = lenCannon * math.cos(self.cannon.getP()+90)
             shot.model.setPos((self.base.getX()), (self.base.getY()), (self.base.getZ()-1))
             shot.model.setH(self.cannon.getH())
-            print "Shot model: ", shot.model.getPos()
-            print "Cannon model: ", self.cannon.getPos()
+            #print "Shot model: ", shot.model.getPos()
+            #print "Cannon model: ", self.cannon.getPos()
             self.projectiles.append(shot)
-            self.fired = True
+            if self.currentweapon == 1:
+                self.firedCannon = True
+            else:
+                self.firedMG = True
         for i in range(len(self.projectiles)):
             self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].velx, self.projectiles[i].model.getY() + self.projectiles[i].vely, self.projectiles[i].model.getZ() + self.projectiles[i].velz)
             self.projectiles[i].grav()
