@@ -237,6 +237,7 @@ class PlayerTank(entity.entity): #use to create player tank
 
     def fire(self, task):
         delta = task.time - self.prevtimeforPlayer
+        #print "Turret Pos: ", self.turret.getPos()
         if self.fired:
             self.fireCount -= 1
             if self.fireCount == 0:
@@ -250,7 +251,13 @@ class PlayerTank(entity.entity): #use to create player tank
             shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90) )
             shot.velx += self.vel.xcomp()
             shot.vely += self.vel.ycomp()
-            shot.model.setPos(self.cannon.getX(), self.cannon.getY(), 1)
+
+            proj = lenCannon * math.sin(self.cannon.getP()+90)
+            tipx = proj * math.cos(self.cannon.getH()-90)
+            tipy = proj * math.sin(self.cannon.getH()-90)
+            tipz = lenCannon * math.cos(self.cannon.getP()+90)
+            shot.model.setPos((self.base.getX()), (self.base.getY()), (self.base.getZ()-1))
+            shot.model.setH(self.cannon.getH())
             print "Shot model: ", shot.model.getPos()
             print "Cannon model: ", self.cannon.getPos()
             self.projectiles.append(shot)
