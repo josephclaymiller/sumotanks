@@ -68,7 +68,7 @@ class projectile(DirectObject):
                 break
         
     def hitEnemy(self, entry):
-         self.shooter.world.addDamage(1, 0)
+        self.shooter.world.addDamage(1, 0)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
                 self.shooter.projectiles[i].model.removeNode()
