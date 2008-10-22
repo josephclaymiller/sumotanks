@@ -387,6 +387,18 @@ class PlayerTank(entity.entity): #use to create player tank
         
         #Set Crosshair position - If you are moving rediculously fast this gets out of alignment...I don't know why
         
+        if self.currentweapon == 1:
+            dist = 15
+            angle = deg2Rad(self.cannon.getH())
+            dx = dist * math.sin(angle) #Calculate change in x direction
+            dy = dist * -math.cos(angle)#Calculate change in y direction         
+
+        if self.currentweapon == 2:
+            dist = 40
+            angle = deg2Rad(self.cannon.getH())
+            dx = dist * math.sin(angle) #Calculate change in x direction
+            dy = dist * -math.cos(angle)#Calculate change in y direction 
+
         xvalues = (xposition+dx-xposition)  #Distance formula
         yvalues = (yposition+dy-yposition)
         xsquared = math.pow(xvalues,2)
