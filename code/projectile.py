@@ -67,6 +67,7 @@ class projectile(DirectObject):
             self.shooter.world.addDamage(100, 1)
         else:
             self.shooter.world.addDamage(1, 1)
+        base.cTrav.removeCollider(self.nodePath)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
                 self.shooter.projectiles[i].model.removeNode()
@@ -78,6 +79,7 @@ class projectile(DirectObject):
             self.shooter.world.addDamage(100, 0)
         else:
             self.shooter.world.addDamage(1, 0)
+        base.cTrav.removeCollider(self.nodePath)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
                 self.shooter.projectiles[i].model.removeNode()
