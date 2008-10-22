@@ -243,6 +243,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         if hdistance > 3 and not (theta > 45 and theta < 135 or theta < -45 and theta > -135):
             self.keyMap["back"] = not self.forwardsflag
             self.keyMap["forward"] = self.forwardsflag
+            pass
             
         else:
             self.keyMap["back"] = False
@@ -395,6 +396,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         for i in range(len(self.projectiles)):
             if i < len(self.projectiles):
                 if self.projectiles[i].model.getZ() < -20 or self.projectiles[i].model.getZ() > 150 or math.sqrt((self.projectiles[i].model.getX()) ** 2 + (self.projectiles[i].model.getY()) ** 2) > 200:
+                    self.projectiles[i].model.removeNode()
                     del self.projectiles[i]
                     i -= 1
                 else:                
