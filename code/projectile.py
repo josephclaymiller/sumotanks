@@ -1,18 +1,35 @@
-import entity
 import sys, math
 
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 
-class projectile(entity.entity):
-    def __init__(self, mass, xv, yv, angle, pitch):
-        self.model = loader.loadModel("../art/arena/arena1.egg")
-        self.model.setScale(.02)
+class projectile(DirectObject):
+    def __init__(self, mass, posCannon, lenCannon, pitch, head):
+        self.model = loader.loadModel("../art/tank/bullet.egg")
+        self.model.setScale(1)
         self.model.reparentTo(render)
-        self.mass = mass
-        self.acc = entity.force(0,0)
-        self.vel = entity.force(math.sqrt(math.pow(xv,2) + math.pow(yv,2)), angle)
-        self.zv = 3*math.cos(pitch)
-
         
+        self.mass = mass
+        
+        proj = lenCannon * math.sin(pitch)
+        tipx = proj * math.cos(head)
+        tipy = proj * math.sin(head)
+        tipz = lenCannon * math.cos(pitch)
+
+        compx = (tipx + posCannon[0])
+        compy = (tipy + posCannon[1])
+        compz = (tipz + posCannon[2])
+
+        dirx = (compx / lenCannon)
+        diry = (compy / lenCannon)
+        dirz = (compz / lenCannon)
+        
+        muzzvel = .1 #Change to change speed
+
+        self.velx = (dirx * muzzvel)
+        self.vely = (diry * muzzvel)
+        self.velz = (dirz * muzzvel)
+
+    def grav(self):
+        self.velz -= .1 #Change to change affect of gravity
         

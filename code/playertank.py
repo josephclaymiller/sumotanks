@@ -244,16 +244,19 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.fired = False
         if self.keyMap["fire"] and not self.fired:
             print "IT FIRED!"
-            print self.cannon.getP()
-            shot = projectile.projectile(.1, self.vel.xcomp(), self.vel.ycomp(), deg2Rad(self.base.getH()-90), deg2Rad(self.cannon.getP()))
-            forces = entity.force(3-3*math.cos(self.cannon.getP()), deg2Rad(self.cannon.getH()-90))
-            shot.vel = shot.vel.add(forces)
-            shot.model.setPos(self.cannon.getX(), self.cannon.getY(), self.cannon.getZ())
+            print deg2Rad(self.cannon.getP())
+            lenCannon = .1
+            shot = projectile.projectile(.1, self.cannon.getPos(), lenCannon, deg2Rad(self.cannon.getP()), deg2Rad(self.cannon.getH()-90) )
+            shot.velx += self.vel.xcomp()
+            shot.vely += self.vel.ycomp()
+            shot.model.setPos(self.cannon.getX(), self.cannon.getY(), 1)
+            print "Shot model: ", shot.model.getPos()
+            print "Cannon model: ", self.cannon.getPos()
             self.projectiles.append(shot)
             self.fired = True
         for i in range(len(self.projectiles)):
-            self.projectiles[i].zv -= .3
-            self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].vel.xcomp(), self.projectiles[i].model.getY() + self.projectiles[i].vel.ycomp(), self.projectiles[i].model.getZ() + self.projectiles[i].zv)
+            self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].velx, self.projectiles[i].model.getY() + self.projectiles[i].vely, self.projectiles[i].model.getZ() + self.projectiles[i].velz)
+            self.projectiles[i].grav()
         self.prevtimeforPlayer = task.time
         return Task.cont
 
