@@ -171,7 +171,7 @@ class World(DirectObject):
 
     def updateCollision(self, task):
         base.cTrav.traverse(render)
-        for i in range(self.tankGroundHandler.getNumEntries()):
+        '''for i in range(self.tankGroundHandler.getNumEntries()):
             entry = self.tankGroundHandler.getEntry(i)
             if entry.getFromNode().getName() == "Player":
                 tankZ = entry.getSurfacePoint(render).getZ()
@@ -181,7 +181,7 @@ class World(DirectObject):
             if entry.getFromNode().getName() == "Enemy":
                 tankZ = entry.getSurfacePoint(render).getZ()
                 if tankZ is not self.enemy.base.getZ():
-                    self.enemy.base.setPos(self.enemy.base.getX(), self.enemy.base.getY(), 0)
+                    self.enemy.base.setPos(self.enemy.base.getX(), self.enemy.base.getY(), tankZ)'''
         return Task.cont
         
     def updateHud(self,task):        
