@@ -330,8 +330,13 @@ class PlayerTank(entity.entity): #use to create player tank
             else:
                 self.firedMG = True
         for i in range(len(self.projectiles)):
-            self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].velx, self.projectiles[i].model.getY() + self.projectiles[i].vely, self.projectiles[i].model.getZ() + self.projectiles[i].velz)
-            self.projectiles[i].grav()
+            if i < len(self.projectiles):
+                if self.projectiles[i].model.getZ() < -20 or self.projectiles[i].model.getZ() > 150 or math.sqrt((self.projectiles[i].model.getX()) ** 2 + (self.projectiles[i].model.getY()) ** 2) > 200:
+                    del self.projectiles[i]
+                    i -= 1
+                else:                
+                    self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].velx, self.projectiles[i].model.getY() + self.projectiles[i].vely, self.projectiles[i].model.getZ() + self.projectiles[i].velz)
+                    self.projectiles[i].grav()
         self.prevtimeforPlayer = task.time
         return Task.cont
 
