@@ -156,8 +156,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.oldvel = self.vel
         self.vel.magnitude = -damfact*0.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
         print "X: ", XSpeed, " Y: ", YSpeed
-        if self.vel.magnitude < -8:
-            self.vel.magnitude = -8
+        if self.vel.magnitude < -6:
+            self.vel.magnitude = -6
         self.damage += 1
         # uncomment the next line for debug infos
         #print entry

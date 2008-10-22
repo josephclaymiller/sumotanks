@@ -142,8 +142,8 @@ class PlayerTank(entity.entity): #use to create player tank
             damfact = 5
         damfact = self.damage
         self.vel.magnitude = -damfact*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
-        if self.vel.magnitude < -8:
-            self.vel.magnitude = -8
+        if self.vel.magnitude < -6:
+            self.vel.magnitude = -6
         self.damage += 1
         print self.vel.magnitude
         # uncomment the next line for debug infos
