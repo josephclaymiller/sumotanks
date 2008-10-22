@@ -244,9 +244,10 @@ class PlayerTank(entity.entity): #use to create player tank
                 self.fired = False
         if self.keyMap["fire"] and not self.fired:
             print "IT FIRED!"
-            print deg2Rad(self.cannon.getP())
-            lenCannon = .1
-            shot = projectile.projectile(.1, self.cannon.getPos(), lenCannon, deg2Rad(self.cannon.getP()), deg2Rad(self.cannon.getH()-90) )
+            print "Pitch: ",deg2Rad(self.cannon.getP())
+            print "Heading: ",deg2Rad(self.cannon.getH())
+            lenCannon = 1
+            shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90) )
             shot.velx += self.vel.xcomp()
             shot.vely += self.vel.ycomp()
             shot.model.setPos(self.cannon.getX(), self.cannon.getY(), 1)
