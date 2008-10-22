@@ -172,7 +172,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def decide(self, timeishthing):
 
-        if timeishthing - self.starttimer < 5:
+        if timeishthing - self.starttimer < 3:
             return [self.base.getX(), self.base.getY()]
         else:
             self.keyMap["fire"] = True        
@@ -400,6 +400,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         for i in range(len(self.projectiles)):
             if i < len(self.projectiles):
                 if self.projectiles[i].model.getZ() < -20 or self.projectiles[i].model.getZ() > 150 or math.sqrt((self.projectiles[i].model.getX()) ** 2 + (self.projectiles[i].model.getY()) ** 2) > 200:
+                    base.cTrav.removeCollider(self.projectiles[i].nodePath)
                     self.projectiles[i].model.removeNode()
                     del self.projectiles[i]
                     i -= 1

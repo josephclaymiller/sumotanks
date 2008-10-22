@@ -53,6 +53,8 @@ class PlayerTank(entity.entity): #use to create player tank
         self.prevtimeforTurret = 0
         self.prevtimeforBase = 0
 
+        self.allowmovement = False
+
         self.crosshair = Actor("panda-model")
         #self.crosshair.reparentTo(render)
         self.crosshair.setScale(.000000001)
@@ -234,6 +236,7 @@ class PlayerTank(entity.entity): #use to create player tank
         return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])    
 
     def movePlayer(self,task):
+      if self.allowmovement:
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
         self.update()
@@ -337,6 +340,7 @@ class PlayerTank(entity.entity): #use to create player tank
         for i in range(len(self.projectiles)):
             if i < len(self.projectiles):
                 if self.projectiles[i].model.getZ() < -20 or self.projectiles[i].model.getZ() > 150 or math.sqrt((self.projectiles[i].model.getX()) ** 2 + (self.projectiles[i].model.getY()) ** 2) > 200:
+                    base.cTrav.removeCollider(self.projectiles[i].nodePath)
                     self.projectiles[i].model.removeNode()
                     del self.projectiles[i]
                     i -= 1

@@ -119,6 +119,7 @@ class World(DirectObject):
         self.soundqueue.loop('music')
         self.soundqueue.loop('idle')
         self.soundqueue.loop('enemyengineidle')
+        self.player.allowmovement = True
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
         taskMgr.add(self.player.fire, "fireTask")
         taskMgr.add(self.computer.fire, "enemyFireTask")
