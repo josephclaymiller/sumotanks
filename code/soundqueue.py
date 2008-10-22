@@ -13,7 +13,7 @@ class SoundQueue():
         self.queue = []
 
         self.sounds = {
-                'boom':         loader.loadSfx("../art/sounds/long_boom.wav"),
+                'boom':         loader.loadSfx("../art/sounds/boom.wav"),
                 'bang':         loader.loadSfx("../art/sounds/bang.wav"),
                 'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav"),
                 'hit1':         loader.loadSfx("../art/sounds/hit1.wav"),

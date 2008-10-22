@@ -1,4 +1,4 @@
-import sys, math, world
+import sys, math, world, random
 
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
@@ -70,6 +70,7 @@ class projectile(DirectObject):
         self.hasHit = True
         if self.ptype == 1:
             self.shooter.world.addDamage(100, 1)
+            self.shooter.world.soundqueue.enqueue('boom', self.shooter.world.player.base.getX(),self.shooter.world.player.base.getY(),self.shooter.world.player.base.getZ())
             if self.shooter.world.player.vel.magnitude >= 0:
                 self.shooter.world.player.vel.magnitude -= .01*self.shooter.world.computer.damage
                 if self.shooter.world.player.vel.magnitude < -7:
@@ -80,6 +81,7 @@ class projectile(DirectObject):
                     self.shooter.world.player.vel.magnitude = 7 
         else:
             self.shooter.world.addDamage(1, 1)
+            self.shooter.world.soundqueue.enqueue('hit' + str(random.randint(1, 3)), self.shooter.world.player.base.getX(),self.shooter.world.player.base.getY(),self.shooter.world.player.base.getZ())
         base.cTrav.removeCollider(self.nodePath)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
@@ -93,6 +95,7 @@ class projectile(DirectObject):
         self.hasHit = True
         if self.ptype == 1:
             self.shooter.world.addDamage(100, 0)
+            self.shooter.world.soundqueue.enqueue('boom', self.shooter.world.computer.base.getX(),self.shooter.world.computer.base.getY(),self.shooter.world.computer.base.getZ())
             if self.shooter.world.computer.vel.magnitude >= 0:
                 self.shooter.world.computer.vel.magnitude -= .02*self.shooter.world.player.damage
                 if self.shooter.world.computer.vel.magnitude < -7:
@@ -105,6 +108,7 @@ class projectile(DirectObject):
                 print self.shooter.world.computer.vel.magnitude
         else:
             self.shooter.world.addDamage(1, 0)
+            self.shooter.world.soundqueue.enqueue('hit' + str(random.randint(1, 3)), self.shooter.world.computer.base.getX(),self.shooter.world.computer.base.getY(),self.shooter.world.computer.base.getZ())
         base.cTrav.removeCollider(self.nodePath)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
