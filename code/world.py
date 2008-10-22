@@ -129,7 +129,7 @@ class World(DirectObject):
         distance = math.sqrt(xsquared+ysquared)
         if distance>=121:
             self.gameover = True
-            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.jpeg")
+            self.gameoverscreen = OnscreenImage(image = "../art/HUD/losescreen.png", scale = (1.34,1,1))
         
         #Check if computer is outside arena
         xvalues = (self.computer.base.getX())  #Distance formula
@@ -139,7 +139,7 @@ class World(DirectObject):
         distance = math.sqrt(xsquared+ysquared)
         if distance>=121:
             self.gameover = True
-            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.jpeg")
+            self.gameoverscreen = OnscreenImage(image = "../art/HUD/winscreen.png", scale = (1.34,1,1))
 
         if self.gameover == True:
             taskMgr.remove("moveplayerTask")
