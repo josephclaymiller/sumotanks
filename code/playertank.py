@@ -363,8 +363,8 @@ class PlayerTank(entity.entity): #use to create player tank
 
             if deltaPitch < -20:
                 deltaPitch = -20
-            if deltaPitch > -1:
-                deltaPitch = -1           
+            if deltaPitch > 2:
+                deltaPitch = 2           
 
             self.turret.setH(deltaHeading) #Animate change in heading
             self.cannon.setH(deltaHeading)
@@ -396,15 +396,15 @@ class PlayerTank(entity.entity): #use to create player tank
         pitch = self.cannon.getP()  #Set pitch of camera (limits it so player can only look so high and so low)
         if self.cannon.getP() > 8.6:
             pitch = 8.6
-        if self.cannon.getP() < -4.6:
-            pitch = -4.6
+        if self.cannon.getP() < -4.0:
+            pitch = -4.0
         pitch +=5
         camera.setPosHpr(xposition-dx,yposition-dy,self.base.getZ()+5,self.cannon.getH()+180,-pitch,0) #Set camera position, heading, pitch and roll
         
         #Set Crosshair position - If you are moving rediculously fast this gets out of alignment...I don't know why
         
         if self.currentweapon == 1:
-            dist = 15
+            dist = 40
             angle = deg2Rad(self.cannon.getH())
             dx = dist * math.sin(angle) #Calculate change in x direction
             dy = dist * -math.cos(angle)#Calculate change in y direction         
