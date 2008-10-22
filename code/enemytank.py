@@ -174,7 +174,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def decide(self, timeishthing):
 
-        if timeishthing - self.starttimer < 3:
+        if timeishthing - self.starttimer < 1:
             return [self.base.getX(), self.base.getY()]
         else:
             self.keyMap["fire"] = True        
