@@ -29,7 +29,7 @@ class projectile(DirectObject):
         diry = (compy / lenCannon)
         dirz = (compz / lenCannon)
         if ptype == 1: 
-            muzzvel = 2 #Change to change speed
+            muzzvel = 8 #Change to change speed
         else:
             muzzvel = 10 #Change to change speed
 
@@ -43,7 +43,7 @@ class projectile(DirectObject):
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("hit-%in")
-        cSphere = CollisionSphere(0, 0, 0, 3)
+        cSphere = CollisionSphere(0, 0, 0, 1)
         if self.ptype == 1:
             cNode = CollisionNode("Cannon")
         else:

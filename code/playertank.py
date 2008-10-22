@@ -151,7 +151,6 @@ class PlayerTank(entity.entity): #use to create player tank
         if self.vel.magnitude < -4:
             self.vel.magnitude = -4
         self.damage += 1
-        print self.vel.magnitude
         # uncomment the next line for debug infos
         #print entry
 

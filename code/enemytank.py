@@ -118,7 +118,6 @@ class EnemyTank(entity.entity):  #use to create computer tank
             return
         XDiff = -(self.vel.xcomp()-self.world.player.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.player.oldvel.ycomp())
-        print "X: ",self.world.player.oldvel.xcomp()," Y: ", self.world.player.oldvel.ycomp()
         speed = self.vel.magnitude
         if self.vel.magnitude >= 0:
             speed += .3
