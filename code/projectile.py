@@ -29,7 +29,7 @@ class projectile(DirectObject):
         diry = (compy / lenCannon)
         dirz = (compz / lenCannon)
         if ptype == 1: 
-            muzzvel = 8 #Change to change speed
+            muzzvel = 7 #Change to change speed
         else:
             muzzvel = 10 #Change to change speed
 
@@ -39,6 +39,8 @@ class projectile(DirectObject):
 
         self.ptype = ptype
         self.nodePath = self.addCollisionBoundaries()
+
+        self.hasHit = False
         
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
@@ -63,8 +65,20 @@ class projectile(DirectObject):
         self.velz -= .05 #Change to change affect of gravity
     
     def hitPlayer(self, entry):
+        if self.hasHit:
+            return
+        self.hasHit = True
         if self.ptype == 1:
+            print "HIT PLAYER!"
             self.shooter.world.addDamage(100, 1)
+            if self.shooter.world.computer.vel.magnitude >= 0:
+                self.shooter.world.computer.vel.magnitude -= .01*self.shooter.world.computer.damage
+                if self.shooter.world.computer.vel.magnitude < -7:
+                    self.shooter.world.computer.vel.magnitude = -7 
+            else:
+                self.shooter.world.computer.vel.magnitude += .01*self.shooter.world.computer.damage
+                if self.shooter.world.computer.vel.magnitude > 7:
+                    self.shooter.world.computer.vel.magnitude = 7 
         else:
             self.shooter.world.addDamage(1, 1)
         base.cTrav.removeCollider(self.nodePath)
@@ -75,8 +89,22 @@ class projectile(DirectObject):
                 break
         
     def hitEnemy(self, entry):
+        if self.hasHit:
+            return
+        self.hasHit = True
         if self.ptype == 1:
+            print "HIT ENEMY!"
             self.shooter.world.addDamage(100, 0)
+            if self.shooter.world.player.vel.magnitude >= 0:
+                self.shooter.world.player.vel.magnitude -= .001*self.shooter.world.player.damage
+                if self.shooter.world.player.vel.magnitude < -7:
+                    self.shooter.world.player.vel.magnitude = -7 
+                print self.shooter.world.player.vel.magnitude
+            else:
+                self.shooter.world.player.vel.magnitude += .001*self.shooter.world.player.damage
+                if self.shooter.world.player.vel.magnitude > 7:
+                    self.shooter.world.player.vel.magnitude = 7 
+                print self.shooter.world.player.vel.magnitude
         else:
             self.shooter.world.addDamage(1, 0)
         base.cTrav.removeCollider(self.nodePath)
