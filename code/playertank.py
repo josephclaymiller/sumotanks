@@ -368,10 +368,10 @@ class PlayerTank(entity.entity): #use to create player tank
             deltaHeading = self.cannon.getH() + move[0] * -100 #Calculate change in heading
             deltaPitch = self.cannon.getP() + move[1] * -100   #Calculate change in pitch
 
-            if deltaPitch < -20:
-                deltaPitch = -20
-            if deltaPitch > 2:
-                deltaPitch = 2           
+            if deltaPitch < -15:
+                deltaPitch = -15
+            if deltaPitch > 1:
+                deltaPitch = 1           
 
             self.turret.setH(deltaHeading) #Animate change in heading
             self.cannon.setH(deltaHeading)
@@ -417,7 +417,7 @@ class PlayerTank(entity.entity): #use to create player tank
             dy = dist * -math.cos(angle)#Calculate change in y direction         
 
         if self.currentweapon == 2:
-            dist = 40
+            dist = 60
             angle = deg2Rad(self.cannon.getH())
             dx = dist * math.sin(angle) #Calculate change in x direction
             dy = dist * -math.cos(angle)#Calculate change in y direction 
