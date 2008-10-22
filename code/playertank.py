@@ -82,6 +82,8 @@ class PlayerTank(entity.entity): #use to create player tank
         self.firedCannon = False
         self.firedMG = False
 
+        self.oldvel = entity.force(0,0)
+
         entity.entity.__init__(self, 5)          
   
     def addCollisionBoundaries(self):
@@ -135,8 +137,11 @@ class PlayerTank(entity.entity): #use to create player tank
                 Angle = 180
             XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
             YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
-        self.vel.magnitude = self.damage*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
-        self.vel.angle = Angle
+        self.oldvel = self.vel
+        if self.damage < 5:
+            damfact = 5
+        damfact = self.damage
+        self.vel.magnitude = -damfact*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
         self.damage += 1
         print self.vel.magnitude
         # uncomment the next line for debug infos

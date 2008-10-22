@@ -103,8 +103,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def enemyHitPlayer(self, entry):
         print "Enemy"
-        XDiff = -(self.vel.xcomp()-self.world.player.vel.xcomp())
-        YDiff = -(self.vel.ycomp()-self.world.player.vel.ycomp())
+        XDiff = -(self.vel.xcomp()-self.world.player.oldvel.xcomp())
+        YDiff = -(self.vel.ycomp()-self.world.player.oldvel.ycomp())
         if XDiff > 0:
             if YDiff > 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
@@ -137,8 +137,10 @@ class EnemyTank(entity.entity):  #use to create computer tank
                 Angle = 180
             XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
             YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
-        self.vel.magnitude = math.log(self.damage,1.3)*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
-        self.vel.angle = Angle
+        if self.damage < 5:
+            damfact = 5
+        damfact = self.damage
+        self.vel.magnitude = -damfact*0.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
         self.damage += 1
         print self.vel.magnitude
         print self.vel.angle
