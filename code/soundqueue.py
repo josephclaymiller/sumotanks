@@ -4,7 +4,7 @@ import math
 from direct.task import Task
 import world
 
-maxdistance = 500
+maxdistance = 240
 
 
 class SoundQueue():
@@ -15,7 +15,10 @@ class SoundQueue():
         self.sounds = {
                 'boom':         loader.loadSfx("../art/sounds/long_boom.wav"),
                 'bang':         loader.loadSfx("../art/sounds/bang.wav"),
-                'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav")
+                'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav"),
+                'hit1':         loader.loadSfx("../art/sounds/hit1.wav"),
+                'hit2':         loader.loadSfx("../art/sounds/hit2.wav"),
+                'hit3':         loader.loadSfx("../art/sounds/hit3.wav")
             }
 
         self.loops = {

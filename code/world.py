@@ -118,6 +118,7 @@ class World(DirectObject):
         self.soundqueue.loop('enemyengineidle')
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
         taskMgr.add(self.player.fire, "fireTask")
+        taskMgr.add(self.computer.fire, "enemyFireTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
         #taskMgr.add(self.computer.moveenemyTurret, "moveenemyturretTask")
         taskMgr.add(self.computer.moveEnemy, "moveenemyTask")
@@ -151,6 +152,7 @@ class World(DirectObject):
         if self.gameover == True:
             taskMgr.remove("moveplayerTask")
             taskMgr.remove("fireTask")
+            taskMgr.remove("enemyFireTask")
             taskMgr.remove("getplayerpositionTask")
             taskMgr.remove("moveenemytask")
             taskMgr.remove("setheadlightTask")

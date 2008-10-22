@@ -391,7 +391,7 @@ class PlayerTank(entity.entity): #use to create player tank
         yvalues = (yposition+dy-yposition)
         xsquared = math.pow(xvalues,2)
         ysquared = math.pow(yvalues,2)
-        distance = math.sqrt(xsquared+ysquared) 
+        distance = math.sqrt(xsquared+ysquared)
         pitch = self.cannon.getP()*-1
         pitch = deg2Rad(pitch)
         dz = (math.tan(pitch)) * (distance)
@@ -410,12 +410,4 @@ class PlayerTank(entity.entity): #use to create player tank
             elif self.currentweapon == 2:
                 self.crosshair2d=OnscreenImage(image = "machineguncrosshair.png", pos=(p2d[0],0,p2d[1]),scale=0.1)
                 self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
-
-    
-
-
-
-
-
-
 

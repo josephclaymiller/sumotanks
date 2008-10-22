@@ -4,10 +4,9 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-import entity
 import sys, math
 import random
-import world
+import world, entity, projectile
      
 class EnemyTank(entity.entity):  #use to create computer tank
     def __init__(self, world):
@@ -34,18 +33,29 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
 
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0}
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "fire":1}
         self.forwardsflag = False
 
         self.damage = 1
 
         self.prevtimeforPlayer = 0
+        self.prevtimeforPlayerShooting = 0
         self.isMoving = 0
 
         self.haschangedtexture = False
         
         self.world = world
         self.nodePath = self.addCollisionBoundaries()
+
+        self.charge = 0
+
+        self.currentweapon = 1
+
+        self.projectiles = list()
+        self.fireCountCannon = 60
+        self.fireCountMG = 10
+        self.firedCannon = False
+        self.firedMG = False
 
     def setenemyTexture(self,key):
         basepos = self.base.getPos()
@@ -151,15 +161,33 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.playerPos = playerPosition
 
     def decide(self):
+        hdist = math.sqrt((self.base.getX() - self.playerPos[0]) ** 2 + (self.base.getY() - self.playerPos[1]) ** 2)
+        if hdist > 20 and hdist < 7:
+            self.currentweapon = 2
+        else:
+            self.currentweapon = 1
+
+        if self.charge:
+            if math.sqrt((self.base.getX()) ** 2 + (self.base.getY()) ** 2) + 3 > math.sqrt((self.playerPos[0]) ** 2 + (self.playerPos[1]) ** 2):
+                self.charge = False
+                return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+            else:
+                return [self.playerPos[0], self.playerPos[1]]
+        if math.sqrt((self.base.getX() - self.playerPos[0] / 2) ** 2 + (self.base.getY() - self.playerPos[1] / 2) ** 2) < 5:
+            self.charge = True
+            return [self.playerPos[0], self.playerPos[1]]
+
         return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+
+
+
 
     def moveEnemy(self,task):
         """Move enemy base and then the turret"""
-        self.update()
-        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
 
         #Put code to move base here:
         goalpoint = self.decide()
+
         goalheading = ((rad2Deg(math.atan2((self.base.getY() - goalpoint[1]), (self.base.getX() - goalpoint[0]))) + 180))
         absolutebase = (self.base.getH() + 270) % 360
         while absolutebase < 0:
@@ -171,9 +199,9 @@ class EnemyTank(entity.entity):  #use to create computer tank
         if theta < -180:
             theta += 360
 
-        if theta > 1 and theta < 179 or theta < -1 and theta > -179:
-            if theta < 90 and theta > -90:
-                self.forwardsflag = True      
+        if theta < 90 and theta > -90:
+            self.forwardsflag = True
+            if theta > 1 and theta < 179 or theta < -1 and theta > -179:
                 if theta < 0:
                     self.keyMap["right"] = True
                     self.keyMap["left"] = False
@@ -181,21 +209,26 @@ class EnemyTank(entity.entity):  #use to create computer tank
                     self.keyMap["left"] = True
                     self.keyMap["right"] = False
             else:
-                self.forwardsflag = False
+                self.keyMap["right"] = False
+                self.keyMap["left"] = False
+
+        else:
+            self.forwardsflag = False
+            if theta > 1 and theta < 179 or theta < -1 and theta > -179:
                 if theta < 0:
                     self.keyMap["right"] = False
                     self.keyMap["left"] = True
                 else:
                     self.keyMap["left"] = False
                     self.keyMap["right"] = True
+            else:
+                self.keyMap["right"] = False
+                self.keyMap["left"] = False
 
-        else:
-            self.keyMap["right"] = False
-            self.keyMap["left"] = False
 
         hdistance = math.sqrt((self.base.getX() - goalpoint[0]) ** 2 + (self.base.getY() - goalpoint[1]) ** 2)
-        #print "distance: ", hdistance
-        if hdistance > 5 and not (theta > 45 and theta < 135 or theta < -45 and theta > -135):
+
+        if hdistance > 3 and not (theta > 45 and theta < 135 or theta < -45 and theta > -135):
             self.keyMap["back"] = not self.forwardsflag
             self.keyMap["forward"] = self.forwardsflag
             
@@ -308,6 +341,48 @@ class EnemyTank(entity.entity):  #use to create computer tank
         dx = dx/40
         dy = dy/40
         self.cannon.setPos(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ())
+
+    def fire(self, task):
+        delta = task.time - self.prevtimeforPlayerShooting
+        #print "Turret Pos: ", self.turret.getPos()
+        if self.firedCannon:
+            self.fireCountCannon -= 1
+            if self.fireCountCannon == 0:
+                self.fireCountCannon = 60
+                self.firedCannon = False
+        if self.firedMG:
+            self.fireCountMG -= 1
+            if self.fireCountMG == 0:
+                self.fireCountMG = 10
+                self.firedMG = False
+        if self.keyMap["fire"] and not self.firedCannon:
+            lenCannon = 1
+            if self.currentweapon == 1:
+                shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )
+            else:
+                shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 2 )
+            shot.velx += self.vel.xcomp()
+            shot.vely += self.vel.ycomp()
+
+            proj = lenCannon * math.sin(self.cannon.getP()+90)
+            tipx = proj * math.cos(self.cannon.getH()-90)
+            tipy = proj * math.sin(self.cannon.getH()-90)
+            tipz = lenCannon * math.cos(self.cannon.getP()+90)
+            shot.model.setPos((self.base.getX()), (self.base.getY()), (self.base.getZ()-1))
+            shot.model.setH(self.cannon.getH())
+            #print "Shot model: ", shot.model.getPos()
+            #print "Cannon model: ", self.cannon.getPos()
+            self.projectiles.append(shot)
+            if self.currentweapon == 1:
+                self.firedCannon = True
+            else:
+                self.firedMG = True
+        for i in range(len(self.projectiles)):
+            self.projectiles[i].model.setPos(self.projectiles[i].model.getX() + self.projectiles[i].velx, self.projectiles[i].model.getY() + self.projectiles[i].vely, self.projectiles[i].model.getZ() + self.projectiles[i].velz)
+            self.projectiles[i].grav()
+        self.prevtimeforPlayerShooting = task.time
+        return Task.cont
+
         
 
 	def shootatPlayer(self):
