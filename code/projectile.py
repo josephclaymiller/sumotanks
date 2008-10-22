@@ -96,12 +96,12 @@ class projectile(DirectObject):
             print "HIT ENEMY!"
             self.shooter.world.addDamage(100, 0)
             if self.shooter.world.player.vel.magnitude >= 0:
-                self.shooter.world.player.vel.magnitude -= .001*self.shooter.world.player.damage
+                self.shooter.world.player.vel.magnitude -= .004*self.shooter.world.player.damage
                 if self.shooter.world.player.vel.magnitude < -7:
                     self.shooter.world.player.vel.magnitude = -7 
                 print self.shooter.world.player.vel.magnitude
             else:
-                self.shooter.world.player.vel.magnitude += .001*self.shooter.world.player.damage
+                self.shooter.world.player.vel.magnitude += .004*self.shooter.world.player.damage
                 if self.shooter.world.player.vel.magnitude > 7:
                     self.shooter.world.player.vel.magnitude = 7 
                 print self.shooter.world.player.vel.magnitude
