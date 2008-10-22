@@ -81,9 +81,9 @@ class PlayerTank(entity.entity): #use to create player tank
         self.fireCountMG = 10
         self.firedCannon = False
         self.firedMG = False
-        
-        entity.entity.__init__(self, 5)
-        
+
+        entity.entity.__init__(self, 5)          
+  
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("hit-%in")
@@ -95,9 +95,14 @@ class PlayerTank(entity.entity): #use to create player tank
    
         base.cTrav.addCollider(cNP, self.cHandler)
         
-        self.accept("hit-Enemy", self.world.playerHitEnemy)
+        self.accept("hit-Enemy", self.playerHitEnemy)
+
         return cNP
-       
+
+    def playerHitEnemy(self, entry):
+        print "Player"
+        # uncomment the next line for debug infos
+        #print entry
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap

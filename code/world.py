@@ -86,6 +86,11 @@ class World(DirectObject):
         self.accept("i", self.computer.setenemyTexture,[6])
         self.accept("o", self.computer.setenemyTexture,[7])
         self.accept("p", self.computer.setenemyTexture,[8])
+        self.accept("=", self.setscale,[2])
+        self.accept("-", self.setscale,[4])
+        
+    def setscale(self, scale):
+        self.environment.setScale(scale)
        
     def splashScreen(self,task): #Put title tasks in here
         if self.keyMap["enter"]:
@@ -228,14 +233,3 @@ class World(DirectObject):
         base.cTrav.showCollisions(render) #just to visualize the collisions
 #        self.environment.setPos(-8,42,0)
 
-
-    def playerHitEnemy(self, entry):
-        print "Player hit enemy"
-        # uncomment the next line for debug infos
-        #print entry
-
-    def enemyHitPlayer(self, entry):
-        print "Enemy hit player"
-        # uncomment the next line for debug infos
-        #print entry
-        

@@ -97,10 +97,15 @@ class EnemyTank(entity.entity):  #use to create computer tank
         
         base.cTrav.addCollider(cNP, self.cHandler)
         
-        self.accept("hit-Player", self.world.enemyHitPlayer)
+        self.accept("hit-Player", self.enemyHitPlayer)
         
         return cNP
-    
+
+    def enemyHitPlayer(self, entry):
+        print "Enemy"
+        # uncomment the next line for debug infos
+        #print entry
+        
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
