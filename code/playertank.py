@@ -248,11 +248,11 @@ class PlayerTank(entity.entity): #use to create player tank
         
     def toggleHeadlights(self):
         if self.headlightstatus == 1: #Headlight is on...turn it off
-            print "Turn headlight off"
+            #print "Turn headlight off"
             render.clearLight(self.headlightNP)
             self.headlightstatus = 0
         elif self.headlightstatus == 0: #Headlight is off...turn it on
-            print "Turn headlight on"
+            #print "Turn headlight on"
             render.setLight(self.headlightNP)
             self.headlightstatus = 1
 
