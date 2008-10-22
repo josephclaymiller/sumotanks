@@ -125,7 +125,7 @@ class World(DirectObject):
         distance = math.sqrt(xsquared+ysquared)
         if distance>=121:
             self.gameover = True
-            self.gameoverscreen = OnscreenImage(image = "../art/cannonimage.png")
+            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.jpeg")
         
         #Check if computer is outside arena
         xvalues = (self.computer.base.getX())  #Distance formula
@@ -135,7 +135,7 @@ class World(DirectObject):
         distance = math.sqrt(xsquared+ysquared)
         if distance>=121:
             self.gameover = True
-            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.png")
+            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.jpeg")
 
         if self.gameover == True:
             taskMgr.remove("moveplayerTask")
@@ -197,7 +197,7 @@ class World(DirectObject):
         """Loads models/actors into the world"""
 
         #load environment
-        self.environment = loader.loadModel("../art/arena/arena1.egg")
+        self.environment = loader.loadModel("../art/arena/arena.egg")
         self.environment.reparentTo(render)
         self.environment.setScale(4)
 #        self.environment.setPos(-8,42,0)
