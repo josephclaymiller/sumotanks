@@ -30,11 +30,13 @@ class projectile(DirectObject):
         if ptype == 1: 
             muzzvel = 2 #Change to change speed
         else:
-            muzzvel = 6 #Change to change speed
+            muzzvel = 10 #Change to change speed
 
         self.velx = (dirx * muzzvel)
         self.vely = (diry * muzzvel)
         self.velz = (dirz * muzzvel)
+
+        self.ptype = ptype
 
     def grav(self):
         self.velz -= .05 #Change to change affect of gravity

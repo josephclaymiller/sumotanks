@@ -101,6 +101,44 @@ class PlayerTank(entity.entity): #use to create player tank
 
     def playerHitEnemy(self, entry):
         print "Player"
+        XDiff = -(self.vel.xcomp()-self.world.computer.vel.xcomp())
+        YDiff = -(self.vel.ycomp()-self.world.computer.vel.ycomp())
+        if XDiff > 0:
+            if YDiff > 0:
+                Angle = math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+            elif YDiff < 0:
+                Angle = math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+        elif XDiff < 0:
+            if YDiff > 0:
+                Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+            elif YDiff < 0:
+                Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+        elif XDiff == 0:
+            if YDiff > 0:
+                Angle = -90
+            else:
+                Angle = 90
+            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
+            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+        elif YDiff == 0:
+            if XDiff < 0:
+                Angle = 0
+            else:
+                Angle = 180
+            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
+            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+        self.vel.magnitude = self.damage*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
+        self.vel.angle = Angle
+        self.damage += 1
+        print self.vel.magnitude
         # uncomment the next line for debug infos
         #print entry
 
@@ -187,7 +225,7 @@ class PlayerTank(entity.entity): #use to create player tank
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
         self.update()
-        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
+        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), self.base.getZ())
         if self.haschangedtexture == True:
             self.haschangedtexture = False
             self.isMoving = False
@@ -257,9 +295,9 @@ class PlayerTank(entity.entity): #use to create player tank
         if self.firedMG:
             self.fireCountMG -= 1
             if self.fireCountMG == 0:
-                self.fireCountMG = 10
+                self.fireCountMG = random.randint(4,7)
                 self.firedMG = False
-        if self.keyMap["fire"] and not self.firedCannon:
+        if self.keyMap["fire"] and ((not self.firedCannon and self.currentweapon == 1) or (not self.firedMG and self.currentweapon == 2)):
             lenCannon = 1
             if self.currentweapon == 1:
                 shot = projectile.projectile(.1, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )

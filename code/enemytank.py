@@ -103,6 +103,45 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def enemyHitPlayer(self, entry):
         print "Enemy"
+        XDiff = -(self.vel.xcomp()-self.world.player.vel.xcomp())
+        YDiff = -(self.vel.ycomp()-self.world.player.vel.ycomp())
+        if XDiff > 0:
+            if YDiff > 0:
+                Angle = math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+            elif YDiff < 0:
+                Angle = math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+        elif XDiff < 0:
+            if YDiff > 0:
+                Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+            elif YDiff < 0:
+                Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
+                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
+                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+        elif XDiff == 0:
+            if YDiff > 0:
+                Angle = -90
+            else:
+                Angle = 90
+            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
+            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+        elif YDiff == 0:
+            if XDiff < 0:
+                Angle = 0
+            else:
+                Angle = 180
+            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
+            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+        self.vel.magnitude = math.log(self.damage,1.3)*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
+        self.vel.angle = Angle
+        self.damage += 1
+        print self.vel.magnitude
+        print self.vel.angle
         # uncomment the next line for debug infos
         #print entry
         
