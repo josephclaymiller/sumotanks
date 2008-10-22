@@ -128,22 +128,22 @@ class PlayerTank(entity.entity): #use to create player tank
                 Angle = -90
             else:
                 Angle = 90
-            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif YDiff == 0:
             if XDiff < 0:
                 Angle = 0
             else:
                 Angle = 180
-            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         self.oldvel = self.vel
         if self.damage < 5:
             damfact = 5
         damfact = self.damage
-        self.vel.magnitude = -damfact*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
-        if self.vel.magnitude < -6:
-            self.vel.magnitude = -6
+        self.vel.magnitude = -damfact*.3*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
+        if self.vel.magnitude < -4:
+            self.vel.magnitude = -4
         self.damage += 1
         print self.vel.magnitude
         # uncomment the next line for debug infos

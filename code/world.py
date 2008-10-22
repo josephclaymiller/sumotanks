@@ -88,6 +88,8 @@ class World(DirectObject):
         self.accept("p", self.computer.setenemyTexture,[8])
         self.accept("=", self.setscale,[2])
         self.accept("-", self.setscale,[4])
+
+        self.player.setTexture(6)
         
     def setscale(self, scale):
         self.environment.setScale(scale)
