@@ -49,8 +49,8 @@ class World(DirectObject):
         self.cannonglow = OnscreenImage(image = "../art/tank/cannonglow.png", pos=(0,0,0))
         self.mgglow = OnscreenImage(image = "../art/tank/gunglow.png", pos=(0,0,0))
         #self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
-        self.player = playertank.PlayerTank()
-        self.computer = enemytank.EnemyTank()
+        self.player = playertank.PlayerTank(self)
+        self.computer = enemytank.EnemyTank(self)
         self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.4,.85), fg = (0, 211, 0, 1), mayChange = True, scale = 0.17)
         self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.4,.85), fg = (0, 150, 0, 1), mayChange = True, scale = 0.17) 
         self.spashscreen = OnscreenImage(image = "startscreen.png", pos=(0,0,0),scale = (1.35,1,1))
@@ -225,3 +225,15 @@ class World(DirectObject):
         base.cTrav.addCollider(self.player.nodePath, self.tankGroundHandler)
         base.cTrav.showCollisions(render) #just to visualize the collisions
 #        self.environment.setPos(-8,42,0)
+
+
+    def playerHitEnemy(self, entry):
+        print "Player hit enemy"
+        # uncomment the next line for debug infos
+        #print entry
+
+    def enemyHitPlayer(self, entry):
+        print "Enemy hit player"
+        # uncomment the next line for debug infos
+        #print entry
+        

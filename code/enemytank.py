@@ -10,7 +10,7 @@ import random
 import world
      
 class EnemyTank(entity.entity):  #use to create computer tank
-    def __init__(self):
+    def __init__(self, world):
         self.cannon = Actor("cannongreen.egg")
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
@@ -31,6 +31,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
         self.damage = 1
         
+        self.world = world
         self.nodePath = self.addCollisionBoundaries()
 
     def setenemyTexture(self,key):
@@ -83,12 +84,9 @@ class EnemyTank(entity.entity):  #use to create computer tank
         
         base.cTrav.addCollider(cNP, self.cHandler)
         
-        self.accept("hit-Player", self.hitPlayer)
+        self.accept("hit-Player", self.world.enemyHitPlayer)
         
         return cNP
-    
-    def hitPlayer(self, entry):
-        print "Enemy hit player"
     
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition

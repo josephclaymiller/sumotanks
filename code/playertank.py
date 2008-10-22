@@ -16,7 +16,7 @@ import world, entity, projectile
 from pandac.PandaModules import Filename
 
 class PlayerTank(entity.entity): #use to create player tank
-    def __init__(self):
+    def __init__(self, world):
         #NOTE!!!: I couldn't get the models to load conveniently (I believe panda needs an absolute path
         #So in your panda config file (located in Panda3d-1.5.3/etc paste the line where the sumotanks file is
         #for me I had to paste: model-path    C:\Documents and Settings\therrj\Desktop\sumotanks\art\tank
@@ -72,13 +72,14 @@ class PlayerTank(entity.entity): #use to create player tank
         self.prevtimeforPlayer = 0
 
         self.haschangedtexture = False
-
+        
+        self.world = world
         self.nodePath = self.addCollisionBoundaries()
 
         self.projectiles = list()
         self.fireCount = 60
         self.fired = False
-
+        
         entity.entity.__init__(self, 5)
         
     def addCollisionBoundaries(self):
@@ -92,12 +93,9 @@ class PlayerTank(entity.entity): #use to create player tank
    
         base.cTrav.addCollider(cNP, self.cHandler)
         
-        self.accept("hit-Enemy", self.hitEnemy)
-        
+        self.accept("hit-Enemy", self.world.playerHitEnemy)
         return cNP
         
-    def hitEnemy(self, entry):
-        print "Player hit enemy"
 
     def setkeyMap(self, keyMap):
         self.keyMap = keyMap
