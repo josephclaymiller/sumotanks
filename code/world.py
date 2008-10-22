@@ -17,6 +17,9 @@ class World(DirectObject):
     def __init__(self):
         #pass
         base.cTrav = CollisionTraverser('traverser')
+        self.tankGroundHandler = CollisionHandlerQueue()
+        self.floorHandler = CollisionHandlerFloor()
+
         self.worldvalue = 1 #If there is one...
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0, "fire":0}  
 
@@ -114,6 +117,7 @@ class World(DirectObject):
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
         taskMgr.add(self.updateHud, "updatehudTask")
+        taskMgr.add(self.updateCollision, "updatecollisionTask")
         taskMgr.add(self.gamestatus, "gamestatusTask")
 
     def gamestatus(self,task):
@@ -144,7 +148,8 @@ class World(DirectObject):
             taskMgr.remove("moveenemytask")
             taskMgr.remove("setheadlightTask")
             taskMgr.remove("playsoundsTask")
-            taskMgr.remove("undatehudTask")
+            taskMgr.remove("updatehudTask")
+            taskMgr.remove("updatecollisionTask")
             taskMgr.remove("gamestatusTask")
             self.soundqueue.unloop('idle')
             self.soundqueue.unloop('enemyengineidle')
@@ -152,6 +157,21 @@ class World(DirectObject):
     
         return Task.cont
 
+    def updateCollision(self, task):
+        base.cTrav.traverse(render)
+        for i in range(self.tankGroundHandler.getNumEntries()):
+            entry = self.tankGroundHandler.getEntry(i)
+            if entry.getFromNode().getName() == "Player":
+                tankZ = entry.getSurfacePoint(render).getZ()
+                if tankZ is not self.player.base.getZ():
+                    self.player.base.setPos(self.player.base.getX(), self.player.base.getY(), tankZ)
+                    
+            if entry.getFromNode().getName() == "Enemy":
+                tankZ = entry.getSurfacePoint(render).getZ()
+                if tankZ is not self.enemy.base.getZ():
+                    self.enemy.base.setPos(self.enemy.base.getX(), self.enemy.base.getY(), tankZ)
+        return Task.cont
+        
     def updateHud(self,task):        
         self.playerhealth.setText(str(self.player.damage-1))
         self.enemyhealth.setText(str(self.computer.damage-1))   
@@ -200,4 +220,8 @@ class World(DirectObject):
         self.environment = loader.loadModel("../art/arena/arena.egg")
         self.environment.reparentTo(render)
         self.environment.setScale(4)
+        
+        self.floorHandler.addCollider(self.player.base.attachNewNode(CollisionNode('col')), self.player.base)
+        base.cTrav.addCollider(self.player.nodePath, self.tankGroundHandler)
+        base.cTrav.showCollisions(render) #just to visualize the collisions
 #        self.environment.setPos(-8,42,0)
