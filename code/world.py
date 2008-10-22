@@ -17,7 +17,7 @@ class World(DirectObject):
     def __init__(self):
         #pass
         base.cTrav = CollisionTraverser('traverser')
-        
+        self.worldvalue = 1 #If there is one...
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "enter":0, "fire":0}  
 
         #Make mouse invisible
@@ -52,6 +52,7 @@ class World(DirectObject):
         self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.4,.85), fg = (0, 150, 0, 1), mayChange = True, scale = 0.17) 
         self.spashscreen = OnscreenImage(image = "startscreen.png", pos=(0,0,0),scale = (1.35,1,1))
         
+        self.gameover = False
 #        self.player.soundqueue.loop('idle')
 #        self.player.soundqueue.loop('enemyengineidle')
         
@@ -113,7 +114,41 @@ class World(DirectObject):
         taskMgr.add(self.player.setHeadlights, "setheadlightTask")
         taskMgr.add(self.soundqueue.playqueue, "playsoundsTask")
         taskMgr.add(self.updateHud, "updatehudTask")
-        
+        taskMgr.add(self.gamestatus, "gamestatusTask")
+
+    def gamestatus(self,task):
+        #Check if player is outside arena
+        xvalues = (self.player.base.getX())  #Distance formula
+        yvalues = (self.player.base.getY())
+        xsquared = math.pow(xvalues,2)
+        ysquared = math.pow(yvalues,2)
+        distance = math.sqrt(xsquared+ysquared)
+        if distance>=121:
+            self.gameover = True
+            self.gameoverscreen = OnscreenImage(image = "../art/cannonimage.png")
+
+        #Check if computer is outside arena
+        xvalues = (self.computer.base.getX())  #Distance formula
+        yvalues = (self.computer.base.getY())
+        xsquared = math.pow(xvalues,2)
+        ysquared = math.pow(yvalues,2)
+        distance = math.sqrt(xsquared+ysquared)
+        if distance>=121:
+            self.gameover = True
+            self.gameoverscreen = OnscreenImage(image = "../art/endscreen.png")
+
+        if self.gameover == True:
+            taskMgr.remove("moveplayerTask")
+            taskMgr.remove("fireTask")
+            taskMgr.remove("getplayerpositionTask")
+            taskMgr.remove("moveenemytask")
+            taskMgr.remove("setheadlightTask")
+            taskMgr.remove("playsoundsTask")
+            taskMgr.remove("undatehudTask")
+            taskMgr.remove("gamestatusTask")
+            self.soundqueue.unloop('idle')
+            self.soundqueue.unloop('enemyengineidle')
+            self.soundqueue.unloop('engine')
 
     def updateHud(self,task):        
         self.playerhealth.setText(str(self.player.damage-1))

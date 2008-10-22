@@ -71,6 +71,8 @@ class PlayerTank(entity.entity): #use to create player tank
 
         self.prevtimeforPlayer = 0
 
+        self.haschangedtexture = False
+
         self.nodePath = self.addCollisionBoundaries()
 
         self.projectiles = list()
@@ -137,6 +139,11 @@ class PlayerTank(entity.entity): #use to create player tank
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
         self.cannon.setHpr(cannonhpr)
+        self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
+        self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
+        self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
+        self.turnrightcontrol=self.base.getAnimControl("turnright") #Set animation control for moveforwards
+        self.haschangedtexture = True
         self.nodePath = self.addCollisionBoundaries()
     
     def setcurrentWeapon(self, weapon, image):
@@ -165,21 +172,20 @@ class PlayerTank(entity.entity): #use to create player tank
         dx = dist * math.sin(angle) #Calculate change in x direction
         dy = dist * -math.cos(angle)#Calculate change in y direction
         self.headlightNP.setPosHpr(self.base.getX()+dx,self.base.getY()+dy,self.base.getZ(),self.base.getH()+180,self.base.getP(),0)
- 
-
         return Task.cont
 
     def getCoordinates(self):
         position = self.turret.getPos()
-        return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])
-
-    
+        return([self.turret.getX(),self.turret.getY(),self.turret.getZ()])    
 
     def movePlayer(self,task):
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
         self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
+        if self.haschangedtexture == True:
+            self.haschangedtexture = False
+            self.isMoving = False
         if self.keyMap["forward"]:
             angle = self.base.getH()
             self.move.magnitude = 1.2
