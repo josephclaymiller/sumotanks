@@ -338,8 +338,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
         if pitch > 0:
             pitch = 0
         
-        headingoffset = random.randrange(self.loweraimingoffset,self.upperaimingoffset) #random offset for heading
-        pitchoffset = random.randrange(self.loweraimingoffset,self.upperaimingoffset)   #random offset for pitch
+        headingoffset = (random.random() - .5) * (10 + self.world.player.vel.magnitude * 2) #random offset for heading
+        pitchoffset = (random.random() - .5) * (10 + self.world.player.vel.magnitude * 2)   #random offset for pitch
         modifiedheading = heading+headingoffset
         modifiedpitch = pitch+pitchoffset
 
