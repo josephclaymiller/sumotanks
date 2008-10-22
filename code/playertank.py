@@ -63,6 +63,9 @@ class PlayerTank(entity.entity): #use to create player tank
         self.crosshair2d = OnscreenImage(image = "cannoncrosshair.png", pos=(0,0,0),scale=0.1)
         self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
 
+        self.base.setH(120)
+        self.cannon.setH(100)
+        camera.setPosHpr(self.base.getX(), self.base.getY() + 10, self.base.getZ(), self.cannon.getH(),180,180) #Set camera position, heading, pitch and roll
         
         self.currentweapon = 1 #1 for cannon 2 for machine gun
         self.currentweaponimage = OnscreenImage(image = "cannonimage.png", pos=(-.99,0,.92),scale=.3)

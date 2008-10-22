@@ -238,7 +238,7 @@ class World(DirectObject):
         
         self.floorHandler.addCollider(self.player.base.attachNewNode(CollisionNode('col')), self.player.base)
         base.cTrav.addCollider(self.player.nodePath, self.tankGroundHandler)
-        base.cTrav.showCollisions(render) #just to visualize the collisions
+        #base.cTrav.showCollisions(render) #just to visualize the collisions
 #        self.environment.setPos(-8,42,0)
 
     def addDamage(self, amount, type):
