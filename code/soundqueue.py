@@ -27,7 +27,7 @@ class SoundQueue():
                 'enemyengine':      loader.loadSfx("../art/sounds/engine.wav"),
                 'enemyengineidle':  loader.loadSfx("../art/sounds/engineidle.wav"),
                 'idle':             loader.loadSfx("../art/sounds/engineidle.wav"),
-                'music':            loader.loadSfx("../art/sounds/sumotanks.wav"),
+                'music':            loader.loadSfx("../art/sounds/sumotanks.mp3"),
                 'menumusic':        loader.loadSfx("../art/sounds/sumomenu.wav")
         }
 

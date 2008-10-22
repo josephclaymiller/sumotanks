@@ -167,13 +167,14 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def decide(self):
         hdist = math.sqrt((self.base.getX() - self.playerPos[0]) ** 2 + (self.base.getY() - self.playerPos[1]) ** 2)
+        
         if hdist > 15 or hdist < 7:
             self.currentweapon = 2
         else:
             self.currentweapon = 1
 
         if self.charge:
-            if math.sqrt((self.base.getX()) ** 2 + (self.base.getY()) ** 2) + 3 > math.sqrt((self.playerPos[0]) ** 2 + (self.playerPos[1]) ** 2):
+            if math.sqrt((self.base.getX()) ** 2 + (self.base.getY()) ** 2) + 4 > math.sqrt((self.playerPos[0]) ** 2 + (self.playerPos[1]) ** 2):
                 self.charge = False
                 return [self.playerPos[0] / 2, self.playerPos[1] / 2]
             else:
