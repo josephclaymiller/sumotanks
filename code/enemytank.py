@@ -43,6 +43,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.isMoving = 0
 
         self.haschangedtexture = False
+
+        self.oldvel = entity.force(0,0)
         
         self.world = world
         self.nodePath = self.addCollisionBoundaries()
@@ -115,45 +117,48 @@ class EnemyTank(entity.entity):  #use to create computer tank
         print "Enemy"
         XDiff = -(self.vel.xcomp()-self.world.player.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.player.oldvel.ycomp())
+        print "X: ",self.world.player.oldvel.xcomp()," Y: ", self.world.player.oldvel.ycomp()
         if XDiff > 0:
             if YDiff > 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif XDiff < 0:
             if YDiff > 0:
                 Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif XDiff == 0:
             if YDiff > 0:
                 Angle = -90
             else:
                 Angle = 90
-            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
-            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif YDiff == 0:
             if XDiff < 0:
                 Angle = 0
             else:
                 Angle = 180
-            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
-            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         if self.damage < 5:
             damfact = 5
         damfact = self.damage
+        self.oldvel = self.vel
         self.vel.magnitude = -damfact*0.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
+        print "X: ", XSpeed, " Y: ", YSpeed
+        if self.vel.magnitude < -8:
+            self.vel.magnitude = -8
         self.damage += 1
-        print self.vel.magnitude
-        print self.vel.angle
         # uncomment the next line for debug infos
         #print entry
         
@@ -240,6 +245,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         delta = task.time - self.prevtimeforPlayer
         self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
+        self.oldvel = self.vel
         if self.haschangedtexture == True:
             self.haschangedtexture = False
             self.isMoving = False

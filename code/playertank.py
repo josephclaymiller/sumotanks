@@ -103,45 +103,47 @@ class PlayerTank(entity.entity): #use to create player tank
 
     def playerHitEnemy(self, entry):
         print "Player"
-        XDiff = -(self.vel.xcomp()-self.world.computer.vel.xcomp())
-        YDiff = -(self.vel.ycomp()-self.world.computer.vel.ycomp())
+        XDiff = -(self.vel.xcomp()-self.world.computer.oldvel.xcomp())
+        YDiff = -(self.vel.ycomp()-self.world.computer.oldvel.ycomp())
         if XDiff > 0:
             if YDiff > 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif XDiff < 0:
             if YDiff > 0:
                 Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -self.vel.magnitude*math.cos(math.radians(Angle))
-                YSpeed = -self.vel.magnitude*math.sin(math.radians(Angle))
+                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif XDiff == 0:
             if YDiff > 0:
                 Angle = -90
             else:
                 Angle = 90
-            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
-            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         elif YDiff == 0:
             if XDiff < 0:
                 Angle = 0
             else:
-                Angle = 180
-            XSpeed = self.vel.magnitude*math.cos(math.radians(Angle))
-            YSpeed = self.vel.magnitude*math.sin(math.radians(Angle))
+                Angle = 180
+            XSpeed = (self.vel.magnitude+.3)*math.cos(math.radians(Angle))
+            YSpeed = (self.vel.magnitude+.3)*math.sin(math.radians(Angle))
         self.oldvel = self.vel
         if self.damage < 5:
             damfact = 5
         damfact = self.damage
         self.vel.magnitude = -damfact*.8*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
+        if self.vel.magnitude < -8:
+            self.vel.magnitude = -8
         self.damage += 1
         print self.vel.magnitude
         # uncomment the next line for debug infos
@@ -285,7 +287,8 @@ class PlayerTank(entity.entity): #use to create player tank
         else:
             self.soundqueue.unloop('engine')
 
-        self.moveplayerTurret()    
+        self.moveplayerTurret()
+        self.oldvel = self.vel
         self.prevtimeforPlayer = task.time
         return Task.cont              
 
