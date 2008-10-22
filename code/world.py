@@ -126,7 +126,7 @@ class World(DirectObject):
         if distance>=121:
             self.gameover = True
             self.gameoverscreen = OnscreenImage(image = "../art/cannonimage.png")
-
+        
         #Check if computer is outside arena
         xvalues = (self.computer.base.getX())  #Distance formula
         yvalues = (self.computer.base.getY())
@@ -149,6 +149,8 @@ class World(DirectObject):
             self.soundqueue.unloop('idle')
             self.soundqueue.unloop('enemyengineidle')
             self.soundqueue.unloop('engine')
+    
+        return Task.cont
 
     def updateHud(self,task):        
         self.playerhealth.setText(str(self.player.damage-1))
