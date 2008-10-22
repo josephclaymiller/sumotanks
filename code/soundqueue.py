@@ -18,7 +18,8 @@ class SoundQueue():
                 'engineoff':    loader.loadSfx("../art/sounds/engineoff.wav"),
                 'hit1':         loader.loadSfx("../art/sounds/hit1.wav"),
                 'hit2':         loader.loadSfx("../art/sounds/hit2.wav"),
-                'hit3':         loader.loadSfx("../art/sounds/hit3.wav")
+                'hit3':         loader.loadSfx("../art/sounds/hit3.wav"),
+                'cannon':       loader.loadSfx("../art/sounds/firecannon.wav")
             }
 
         self.loops = {
