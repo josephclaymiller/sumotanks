@@ -309,7 +309,7 @@ class PlayerTank(entity.entity): #use to create player tank
         if self.firedMG:
             self.fireCountMG -= 1
             if self.fireCountMG == 0:
-                self.fireCountMG = random.randint(4,7)
+                self.fireCountMG = random.randint(6,11)
                 self.firedMG = False
         if self.keyMap["fire"] and ((not self.firedCannon and self.currentweapon == 1) or (not self.firedMG and self.currentweapon == 2)):
             lenCannon = 1

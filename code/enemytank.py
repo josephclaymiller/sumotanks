@@ -367,9 +367,9 @@ class EnemyTank(entity.entity):  #use to create computer tank
         if self.firedMG:
             self.fireCountMG -= 1
             if self.fireCountMG == 0:
-                self.fireCountMG = 10
+                self.fireCountMG = random.randint(8,14)
                 self.firedMG = False
-        if self.keyMap["fire"] and not self.firedCannon:
+        if self.keyMap["fire"] and ((not self.firedCannon and self.currentweapon == 1) or (not self.firedMG and self.currentweapon == 2)):
             lenCannon = 1
             if self.currentweapon == 1:
                 shot = projectile.projectile(.1, self, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )
