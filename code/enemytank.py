@@ -41,6 +41,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
         self.prevtimeforPlayer = 0
         self.isMoving = 0
+
+        self.haschangedtexture = False
         
         self.world = world
         self.nodePath = self.addCollisionBoundaries()
@@ -155,13 +157,19 @@ class EnemyTank(entity.entity):  #use to create computer tank
             self.keyMap["back"] = False
             self.keyMap["forward"] = False
 
-
+        #actual movement code
         delta = task.time - self.prevtimeforPlayer
         self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
-        if self.keyMap["forward"]:            angle = self.base.getH()            self.move.magnitude = 1.2
+        if self.haschangedtexture == True:
+            self.haschangedtexture = False
+            self.isMoving = False
+        if self.keyMap["forward"]:
+            angle = self.base.getH()
+            self.move.magnitude = 1.2
             self.move.angle = deg2Rad(angle-90)
-        elif self.keyMap["back"]:            angle = self.base.getH()
+        elif self.keyMap["back"]:
+            angle = self.base.getH()
             self.move.magnitude = -1.2
             self.move.angle = deg2Rad(angle-90)
         if self.keyMap["left"]:
@@ -172,29 +180,41 @@ class EnemyTank(entity.entity):  #use to create computer tank
            self.move.magnitude = 0
         #Code to determine animations:
         if self.keyMap["forward"]:
+            
             if self.isMoving == False:
-                self.moveforwardscontrol.setPlayRate(10)#set play rate for moveforwards animation
+                self.moveforwardscontrol.setPlayRate(4)#set play rate for moveforwards animation
                 self.base.loop("moveforwards")
                 self.isMoving = True
         elif self.keyMap["back"]:
             if self.isMoving == False:
-                self.movebackwardsscontrol.setPlayRate(10)#set play rate for movebackwards animation
+                self.movebackwardsscontrol.setPlayRate(4)#set play rate for movebackwards animation
                 self.base.loop("movebackwards")
                 self.isMoving = True
         elif self.keyMap["left"]:
             if self.isMoving == False:
-                self.turnleftcontrol.setPlayRate(10)#set play rate for turnleft animation
+                self.turnleftcontrol.setPlayRate(4)#set play rate for turnleft animation
                 self.base.loop("turnleft")
                 self.isMoving = True
         elif self.keyMap["right"]:
             if self.isMoving == False:
-                self.turnrightcontrol.setPlayRate(10)#set play rate for turnright animation
+                self.turnrightcontrol.setPlayRate(4)#set play rate for turnright animation
                 self.base.loop("turnright")
                 self.isMoving = True
         else:
             if self.isMoving:
                 self.base.stop()
                 self.isMoving = False
+
+        if self.isMoving:
+            self.soundqueue.loop('enemyengine')#, [self.base.getX()], [self.base.getY()], [self.base.getZ()])
+        else:
+               self.isMoving = False
+
+        if self.isMoving:
+            self.soundqueue.loop('enemyengine')
+        else:
+            self.soundqueue.unloop('enemyengine')
+
 
 
         self.moveenemyTurret() #Move enemy turret (to keep the code separate, but still update both in the same frame

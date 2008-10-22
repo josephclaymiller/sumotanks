@@ -107,9 +107,10 @@ class World(DirectObject):
         self.setupLights()
         self.loadModels()
         self.player.soundqueue = self.soundqueue
+        self.computer.soundqueue = self.soundqueue
         self.soundqueue.loop('music')
-        self.player.soundqueue.loop('idle')
-        self.player.soundqueue.loop('enemyengineidle')
+        self.soundqueue.loop('idle')
+        self.soundqueue.loop('enemyengineidle')
         taskMgr.add(self.player.movePlayer, "moveplayerTask")
         taskMgr.add(self.player.fire, "fireTask")
         taskMgr.add(self.getplayerPos, "getplayerpositionTask")
