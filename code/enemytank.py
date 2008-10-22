@@ -155,8 +155,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
                 Angle = 180
             XSpeed = -speed*math.cos(math.radians(Angle))
             YSpeed = -speed*math.sin(math.radians(Angle))
-        if self.damage < 5:
-            damfact = 5
+        if self.damage < 3000:
+            damfact = 3000
         damfact = self.damage
         self.oldvel = self.vel
         self.vel.magnitude = -damfact*0.3*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
