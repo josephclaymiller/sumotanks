@@ -237,3 +237,8 @@ class World(DirectObject):
         base.cTrav.showCollisions(render) #just to visualize the collisions
 #        self.environment.setPos(-8,42,0)
 
+    def addDamage(self, amount, type):
+        if type == 1:
+            self.player.damage += amount
+        else:
+            self.computer.damage += amount

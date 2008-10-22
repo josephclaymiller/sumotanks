@@ -1,10 +1,10 @@
-import sys, math
+import sys, math, world
 
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 
 class projectile(DirectObject):
-    def __init__(self, mass, lenCannon, pitch, head, ptype=None):
+    def __init__(self, mass, world, lenCannon, pitch, head, ptype=None):
         if ptype == 1:
             self.model = loader.loadModel("../art/tank/bullet.egg")
             self.model.setScale(1)
@@ -13,6 +13,7 @@ class projectile(DirectObject):
             self.model.setScale(.4)
         self.model.reparentTo(render)
         
+        self.world = world
         self.mass = mass
         
         proj = lenCannon * math.sin(pitch)
@@ -37,7 +38,30 @@ class projectile(DirectObject):
         self.velz = (dirz * muzzvel)
 
         self.ptype = ptype
+        self.nodePath = self.addCollisionBoundaries()
+        
+    def addCollisionBoundaries(self):
+        self.cHandler = CollisionHandlerEvent()
+        self.cHandler.setInPattern("hit-%in")
+        cSphere = CollisionSphere(0, 0, 0, 3)
+        cNode = CollisionNode("Bullet")
+        cNode.addSolid(cSphere)
+        cNP = self.model.attachNewNode(cNode)
+        #cNP.show()
+        
+        base.cTrav.addCollider(cNP, self.cHandler)
+        
+        self.accept("hit-Player", self.hitPlayer)
+        self.accept("hit-Enemy", self.hitEnemy)
+        
+        return cNP
 
     def grav(self):
         self.velz -= .05 #Change to change affect of gravity
+    
+    def hitPlayer(self, entry):
+        self.world.addDamage(1, 1)
+    
+    def hitEnemy(self, entry):
+        self.world.addDamage(1, 0)
         
