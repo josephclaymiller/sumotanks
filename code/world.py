@@ -33,6 +33,12 @@ class World(DirectObject):
 
         self.accept("escape", sys.exit)
         self.hud = OnscreenImage(image = "hud.png", pos=(0,0,.85),scale = (1.35,0,.157))
+        self.hudweapon = OnscreenImage(image = "currentWeaponCannon.png", pos = (-.95,0,.75),scale=(.23,1,.05))
+        self.hudweapon.setTransparency(TransparencyAttrib.MAlpha)
+        self.playerhudhealth = OnscreenImage(image = "playerDamage.png", pos=(-.4,0,.75), scale=(.15,0,.05))
+        self.playerhudhealth.setTransparency(TransparencyAttrib.MAlpha)
+        self.enemyhudhealth = OnscreenImage(image = "enemyDamage.png", pos=(.4,0,.75), scale=(.15,0,.05))
+        self.enemyhudhealth.setTransparency(TransparencyAttrib.MAlpha)
         self.treadglow = OnscreenImage(image = "../art/tank/treadglow.png", pos=(0,0,0))
         self.tankglow = OnscreenImage(image = "../art/tank/newtankglow.png", pos=(0,0,0))
         self.turretglow = OnscreenImage(image = "../art/tank/turretglow.png", pos=(0,0,0))
@@ -42,9 +48,9 @@ class World(DirectObject):
         #self.pressenter = OnscreenText(text = "Press Enter To Continue...", pos = (0,0))
         self.player = playertank.PlayerTank()
         self.computer = enemytank.EnemyTank()
-        self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2)
-        self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.5,.8), fg = (255, 255, 255, 1), mayChange = True, scale = 0.2) 
-        self.spashscreen = OnscreenImage(image = "summotankstitlescreen.png", pos=(0,0,0),scale = (1.35,1,1))
+        self.playerhealth = OnscreenText(text = str(self.player.damage-1), pos = (-.4,.85), fg = (0, 211, 0, 1), mayChange = True, scale = 0.17)
+        self.enemyhealth = OnscreenText(text = str(self.player.damage-1), pos = (.4,.85), fg = (0, 150, 0, 1), mayChange = True, scale = 0.17) 
+        self.spashscreen = OnscreenImage(image = "startscreen.png", pos=(0,0,0),scale = (1.35,1,1))
         
 #        self.player.soundqueue.loop('idle')
 #        self.player.soundqueue.loop('enemyengineidle')
@@ -109,8 +115,7 @@ class World(DirectObject):
         taskMgr.add(self.updateHud, "updatehudTask")
         
 
-    def updateHud(self,task):
-        self.player.damage +=1
+    def updateHud(self,task):        
         self.playerhealth.setText(str(self.player.damage-1))
         self.enemyhealth.setText(str(self.computer.damage-1))   
         return Task.cont
@@ -119,8 +124,12 @@ class World(DirectObject):
     def setWeapon(self, key):
         if key == 1: #Switch image to cannon
             self.player.setcurrentWeapon(1,"cannonimage.png")
+            self.hudweapon.setImage("currentWeaponCannon.png")
+            self.hudweapon.setTransparency(TransparencyAttrib.MAlpha)
         if key == 2: #Switch image to machinegun
             self.player.setcurrentWeapon(2,"machinegunimage.png")   
+            self.hudweapon.setImage("PlayerWeaponMachineGun.png")
+            self.hudweapon.setTransparency(TransparencyAttrib.MAlpha)
 
     def setKey(self, key, value):
         self.keyMap[key] = value
