@@ -24,6 +24,38 @@ class PlayerTank(entity.entity): #use to create player tank
         #If there is a more convenient way to do this feel free
         self.isMoving = False
 
+
+        self.base = Actor("baseblue.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.turret = Actor("turretblue.egg")
+        self.cannon = Actor("cannonblue.egg")
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+        self.base = Actor("basepurple.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.turret = Actor("turretpurple.egg")
+        self.cannon = Actor("cannonpurple.egg")
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+        self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.turret = Actor("turretgreen.egg")
+        self.cannon = Actor("cannongreen.egg")
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+        self.base = Actor("baseyellow.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.turret = Actor("turretyellow.egg")
+        self.cannon = Actor("cannonyellow.egg")
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+        self.base = Actor("basered.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
+        self.turret = Actor("turretred.egg")
+        self.cannon = Actor("cannonred.egg")
+        self.base.delete()
+        self.turret.delete()
+        self.cannon.delete()
+
         self.cannon = Actor("cannongreen.egg")
         self.cannon.setScale(.75)
         self.cannon.reparentTo(render)
@@ -34,7 +66,10 @@ class PlayerTank(entity.entity): #use to create player tank
         self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.setScale(.75)        
         self.base.reparentTo(render)
-        
+        self.base.setPos(60,60,0)
+        self.base.setH(-40)
+        self.cannon.setH(-90)
+
         self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
         self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
         self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
@@ -58,14 +93,13 @@ class PlayerTank(entity.entity): #use to create player tank
         self.crosshair = Actor("panda-model")
         #self.crosshair.reparentTo(render)
         self.crosshair.setScale(.000000001)
-        self.crosshair.setH(180)
+        #self.crosshair.setH(180)
 
         self.crosshair2d = OnscreenImage(image = "cannoncrosshair.png", pos=(0,0,0),scale=0.1)
         self.crosshair2d.setTransparency(TransparencyAttrib.MAlpha)
 
-        self.base.setH(120)
-        self.cannon.setH(100)
-        camera.setPosHpr(self.base.getX(), self.base.getY() + 10, self.base.getZ(), self.cannon.getH(),180,180) #Set camera position, heading, pitch and roll
+
+        #camera.setPosHpr(self.base.getX(), self.base.getY() + 10, self.base.getZ(), self.cannon.getH(),180,180) #Set camera position, heading, pitch and roll
         
         self.currentweapon = 1 #1 for cannon 2 for machine gun
         self.currentweaponimage = OnscreenImage(image = "cannonimage.png", pos=(-.99,0,.92),scale=.3)

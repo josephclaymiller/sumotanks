@@ -20,6 +20,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.setScale(.75)        
         self.base.reparentTo(render)
+        self.base.setPos(100,100,0)
+
 
         self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
         self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
@@ -28,7 +30,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         
         entity.entity.__init__(self, 5)
         self.base.setName("enemy")
-        self.base.setPos(15,15,0)
+        self.base.setPos(-60,-60,0)
         self.playerPos = [0,0,0]
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
