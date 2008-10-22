@@ -131,6 +131,8 @@ class World(DirectObject):
         taskMgr.add(self.updateCollision, "updatecollisionTask")
         taskMgr.add(self.gamestatus, "gamestatusTask")
 
+        self.computer.starttimer = task.time
+
     def gamestatus(self,task):
         #Check if player is outside arena
         xvalues = (self.player.base.getX())  #Distance formula

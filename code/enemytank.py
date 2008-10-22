@@ -33,7 +33,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
 
-        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "fire":1}
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "fire":0}
         self.forwardsflag = False
 
         self.damage = 1
@@ -170,25 +170,30 @@ class EnemyTank(entity.entity):  #use to create computer tank
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
-    def decide(self):
-        hdist = math.sqrt((self.base.getX() - self.playerPos[0]) ** 2 + (self.base.getY() - self.playerPos[1]) ** 2)
-        
-        if hdist > 15 or hdist < 7:
-            self.currentweapon = 2
+    def decide(self, timeishthing):
+
+        if timeishthing - self.starttimer < 5:
+            return [self.base.getX(), self.base.getY()]
         else:
-            self.currentweapon = 1
-
-        if self.charge:
-            if math.sqrt((self.base.getX()) ** 2 + (self.base.getY()) ** 2) + 4 > math.sqrt((self.playerPos[0]) ** 2 + (self.playerPos[1]) ** 2):
-                self.charge = False
-                return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+            self.keyMap["fire"] = True        
+            hdist = math.sqrt((self.base.getX() - self.playerPos[0]) ** 2 + (self.base.getY() - self.playerPos[1]) ** 2)
+            
+            if hdist > 15 or hdist < 7:
+                self.currentweapon = 2
             else:
-                return [self.playerPos[0], self.playerPos[1]]
-        if math.sqrt((self.base.getX() - self.playerPos[0] / 2) ** 2 + (self.base.getY() - self.playerPos[1] / 2) ** 2) < 5:
-            self.charge = True
-            return [self.playerPos[0], self.playerPos[1]]
+                self.currentweapon = 1
 
-        return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+            if self.charge:
+                if math.sqrt((self.base.getX()) ** 2 + (self.base.getY()) ** 2) + 4 > math.sqrt((self.playerPos[0]) ** 2 + (self.playerPos[1]) ** 2):
+                    self.charge = False
+                    return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+                else:
+                    return [self.playerPos[0], self.playerPos[1]]
+            if math.sqrt((self.base.getX() - self.playerPos[0] / 2) ** 2 + (self.base.getY() - self.playerPos[1] / 2) ** 2) < 5:
+                self.charge = True
+                return [self.playerPos[0], self.playerPos[1]]
+
+            return [self.playerPos[0] / 2, self.playerPos[1] / 2]
 
 
 
@@ -197,7 +202,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
         """Move enemy base and then the turret"""
 
         #Put code to move base here:
-        goalpoint = self.decide()
+        goalpoint = self.decide(task.time)
 
         goalheading = ((rad2Deg(math.atan2((self.base.getY() - goalpoint[1]), (self.base.getX() - goalpoint[0]))) + 180))
         absolutebase = (self.base.getH() + 270) % 360
