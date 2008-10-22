@@ -44,7 +44,10 @@ class projectile(DirectObject):
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("hit-%in")
         cSphere = CollisionSphere(0, 0, 0, 3)
-        cNode = CollisionNode("Bullet")
+        if self.ptype == 1:
+            cNode = CollisionNode("Cannon")
+        else:
+            cNode = CollisionNode("Bullet")
         cNode.addSolid(cSphere)
         cNP = self.model.attachNewNode(cNode)
         #cNP.show()
@@ -60,7 +63,10 @@ class projectile(DirectObject):
         self.velz -= .05 #Change to change affect of gravity
     
     def hitPlayer(self, entry):
-        self.shooter.world.addDamage(1, 1)
+        if self.ptype == 1:
+            self.shooter.world.addDamage(100, 1)
+        else:
+            self.shooter.world.addDamage(1, 1)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
                 self.shooter.projectiles[i].model.removeNode()
@@ -68,7 +74,10 @@ class projectile(DirectObject):
                 break
         
     def hitEnemy(self, entry):
-        self.shooter.world.addDamage(1, 0)
+        if self.ptype == 1:
+            self.shooter.world.addDamage(100, 0)
+        else:
+            self.shooter.world.addDamage(1, 0)
         for i in range(len(self.shooter.projectiles)):
             if self.shooter.projectiles[i] == self:
                 self.shooter.projectiles[i].model.removeNode()

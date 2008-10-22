@@ -102,8 +102,8 @@ class PlayerTank(entity.entity): #use to create player tank
         return cNP
 
     def playerHitEnemy(self, entry):
-        print "Player"
-        print entry
+        if entry.getFromNode().getName() == "Bullet" or entry.getFromNode().getName() == "Cannon":
+            return
         XDiff = -(self.vel.xcomp()-self.world.computer.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.computer.oldvel.ycomp())
         speed = self.vel.magnitude

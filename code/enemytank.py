@@ -114,8 +114,8 @@ class EnemyTank(entity.entity):  #use to create computer tank
         return cNP
 
     def enemyHitPlayer(self, entry):
-        print "Enemy"
-        print entry
+        if entry.getFromNode().getName() == "Bullet" or entry.getFromNode().getName() == "Cannon":
+            return
         XDiff = -(self.vel.xcomp()-self.world.player.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.player.oldvel.ycomp())
         print "X: ",self.world.player.oldvel.xcomp()," Y: ", self.world.player.oldvel.ycomp()
