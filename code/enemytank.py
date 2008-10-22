@@ -21,15 +21,26 @@ class EnemyTank(entity.entity):  #use to create computer tank
         self.base = Actor("basegreen.egg", {"moveforwards":"forwards.egg","movebackwards":"backwards.egg", "turnleft":"left.egg","turnright":"right.egg"})
         self.base.setScale(.75)        
         self.base.reparentTo(render)
+
+        self.moveforwardscontrol=self.base.getAnimControl("moveforwards") #Set animation control for moveforwards
+        self.movebackwardsscontrol=self.base.getAnimControl("movebackwards") #Set animation control for moveforwards
+        self.turnleftcontrol=self.base.getAnimControl("turnleft") #Set animation control for moveforwards
+        self.turnrightcontrol=self.base.getAnimControl("turnright") #Set animation control for moveforwards
         
         entity.entity.__init__(self, 5)
         self.base.setName("enemy")
-        self.base.setPos(7,7,0)
+        self.base.setPos(15,15,0)
         self.playerPos = [0,0,0]
         self.loweraimingoffset = -1
         self.upperaimingoffset = 1
 
+        self.keyMap = {"left":0, "right":0, "forward":0, "back":0}
+        self.forwardsflag = False
+
         self.damage = 1
+
+        self.prevtimeforPlayer = 0
+        self.isMoving = 0
         
         self.world = world
         self.nodePath = self.addCollisionBoundaries()
@@ -91,15 +102,103 @@ class EnemyTank(entity.entity):  #use to create computer tank
     def setplayerPos(self,playerPosition):
         self.playerPos = playerPosition
 
+    def decide(self):
+        return [self.playerPos[0] / 2, self.playerPos[1] / 2]
+
     def moveEnemy(self,task):
         """Move enemy base and then the turret"""
         self.update()
         self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
 
         #Put code to move base here:
-        self.base.setH(self.base.getH()+1)
+        goalpoint = self.decide()
+        goalheading = ((rad2Deg(math.atan2((self.base.getY() - goalpoint[1]), (self.base.getX() - goalpoint[0]))) + 180))
+        absolutebase = (self.base.getH() + 270) % 360
+        while absolutebase < 0:
+            absolutebase += 360
+        theta = goalheading - absolutebase
+
+        if theta > 180:
+            theta -= 360
+        if theta < -180:
+            theta += 360
+
+        if theta > 1 and theta < 179 or theta < -1 and theta > -179:
+            if theta < 90 and theta > -90:
+                self.forwardsflag = True      
+                if theta < 0:
+                    self.keyMap["right"] = True
+                    self.keyMap["left"] = False
+                else:
+                    self.keyMap["left"] = True
+                    self.keyMap["right"] = False
+            else:
+                self.forwardsflag = False
+                if theta < 0:
+                    self.keyMap["right"] = False
+                    self.keyMap["left"] = True
+                else:
+                    self.keyMap["left"] = False
+                    self.keyMap["right"] = True
+
+        else:
+            self.keyMap["right"] = False
+            self.keyMap["left"] = False
+
+        hdistance = math.sqrt((self.base.getX() - goalpoint[0]) ** 2 + (self.base.getY() - goalpoint[1]) ** 2)
+        #print "distance: ", hdistance
+        if hdistance > 5 and not (theta > 45 and theta < 135 or theta < -45 and theta > -135):
+            self.keyMap["back"] = not self.forwardsflag
+            self.keyMap["forward"] = self.forwardsflag
+            
+        else:
+            self.keyMap["back"] = False
+            self.keyMap["forward"] = False
+
+
+        delta = task.time - self.prevtimeforPlayer
+        self.update()
+        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
+        if self.keyMap["forward"]:            angle = self.base.getH()            self.move.magnitude = 1.2
+            self.move.angle = deg2Rad(angle-90)
+        elif self.keyMap["back"]:            angle = self.base.getH()
+            self.move.magnitude = -1.2
+            self.move.angle = deg2Rad(angle-90)
+        if self.keyMap["left"]:
+            self.base.setH(self.base.getH() + delta*100) #fiddle with this number to determine how fast it moves)
+        elif self.keyMap["right"]:
+            self.base.setH(self.base.getH() - delta*100) #fiddle with this number to determine how fast it moves)
+        if not self.keyMap["forward"] and not self.keyMap["back"]:
+           self.move.magnitude = 0
+        #Code to determine animations:
+        if self.keyMap["forward"]:
+            if self.isMoving == False:
+                self.moveforwardscontrol.setPlayRate(10)#set play rate for moveforwards animation
+                self.base.loop("moveforwards")
+                self.isMoving = True
+        elif self.keyMap["back"]:
+            if self.isMoving == False:
+                self.movebackwardsscontrol.setPlayRate(10)#set play rate for movebackwards animation
+                self.base.loop("movebackwards")
+                self.isMoving = True
+        elif self.keyMap["left"]:
+            if self.isMoving == False:
+                self.turnleftcontrol.setPlayRate(10)#set play rate for turnleft animation
+                self.base.loop("turnleft")
+                self.isMoving = True
+        elif self.keyMap["right"]:
+            if self.isMoving == False:
+                self.turnrightcontrol.setPlayRate(10)#set play rate for turnright animation
+                self.base.loop("turnright")
+                self.isMoving = True
+        else:
+            if self.isMoving:
+                self.base.stop()
+                self.isMoving = False
+
 
         self.moveenemyTurret() #Move enemy turret (to keep the code separate, but still update both in the same frame
+        self.prevtimeforPlayer = task.time
         return Task.cont
         
     def moveenemyTurret(self): #used so enemy turret is aimed at the player

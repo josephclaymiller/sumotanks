@@ -75,8 +75,7 @@ class SoundQueue():
             theta = soundheading - (self.playerPos[3] % 360)
             if theta > 180:
                 theta -= 360
-            self.bal *= -1
-            self.sounds[sound[0]].setBalance(self.bal)
+            self.sounds[sound[0]].setBalance(math.sin(deg2Rad(theta)))
         
 
             self.sounds[sound[0]].play()
@@ -95,12 +94,11 @@ class SoundQueue():
                 self.loops[loop].setVolume(vol)
 
                 #sets pan
-                soundheading = rad2Deg(math.atan2(self.playerPos[1] - self.enemyPos[1], self.playerPos[0] - self.enemyPos[2])) + 90
+                soundheading = rad2Deg(math.atan2(self.playerPos[1] - self.enemyPos[1], self.playerPos[0] - self.enemyPos[0])) + 90
                 theta = soundheading - (self.playerPos[3] % 360)
                 if theta > 180:
                     theta -= 360
-                self.bal *= -1
-                self.loops[loop].setBalance(self.bal)
+                self.loops[loop].setBalance(math.sin(deg2Rad(theta)))
         
 
     

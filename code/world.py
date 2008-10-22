@@ -16,6 +16,9 @@ from direct.gui.DirectGui import *
 class World(DirectObject):
     def __init__(self):
         #pass
+        self.soundqueue = soundqueue.SoundQueue()
+        self.soundqueue.loop('menumusic')
+
         base.cTrav = CollisionTraverser('traverser')
         self.tankGroundHandler = CollisionHandlerQueue()
         self.floorHandler = CollisionHandlerFloor()
@@ -31,8 +34,6 @@ class World(DirectObject):
         #Sets up glow mapping based on alpha channel
         self.filters = CommonFilters(base.win, base.cam)
         filterok = self.filters.setBloom(blend=(0,0,0,1), desat= 0.0, intensity=2.2, size="small")
-        self.soundqueue = soundqueue.SoundQueue()
-        self.soundqueue.loop('menumusic')
 
         self.accept("escape", sys.exit)
         self.hud = OnscreenImage(image = "hud.png", pos=(0,0,.85),scale = (1.35,0,.157))
