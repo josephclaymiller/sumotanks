@@ -365,10 +365,10 @@ class EnemyTank(entity.entity):  #use to create computer tank
         if self.keyMap["fire"] and not self.firedCannon:
             lenCannon = 1
             if self.currentweapon == 1:
-                shot = projectile.projectile(.1, self.world, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )
+                shot = projectile.projectile(.1, self, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 1 )
                 self.soundqueue.enqueue('cannon', self.base.getX(), self.base.getY(), self.base.getZ())
             else:
-                shot = projectile.projectile(.1, self.world, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 2 )
+                shot = projectile.projectile(.1, self, lenCannon, deg2Rad(self.cannon.getP()+90), deg2Rad(self.cannon.getH()-90), 2 )
                 self.soundqueue.enqueue('bang', self.base.getX(), self.base.getY(), self.base.getZ())
             shot.velx += self.vel.xcomp()
             shot.vely += self.vel.ycomp()

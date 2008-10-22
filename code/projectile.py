@@ -4,7 +4,7 @@ from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 
 class projectile(DirectObject):
-    def __init__(self, mass, world, lenCannon, pitch, head, ptype=None):
+    def __init__(self, mass, shooter, lenCannon, pitch, head, ptype=None):
         if ptype == 1:
             self.model = loader.loadModel("../art/tank/bullet.egg")
             self.model.setScale(1)
@@ -13,7 +13,7 @@ class projectile(DirectObject):
             self.model.setScale(.4)
         self.model.reparentTo(render)
         
-        self.world = world
+        self.shooter = shooter
         self.mass = mass
         
         proj = lenCannon * math.sin(pitch)
@@ -60,8 +60,17 @@ class projectile(DirectObject):
         self.velz -= .05 #Change to change affect of gravity
     
     def hitPlayer(self, entry):
-        self.world.addDamage(1, 1)
-    
-    def hitEnemy(self, entry):
-        self.world.addDamage(1, 0)
+        self.shooter.world.addDamage(1, 1)
+        for i in range(len(self.shooter.projectiles)):
+            if self.shooter.projectiles[i] == self:
+                self.shooter.projectiles[i].model.removeNode()
+                del self.shooter.projectiles[i]
+                break
         
+    def hitEnemy(self, entry):
+         self.shooter.world.addDamage(1, 0)
+        for i in range(len(self.shooter.projectiles)):
+            if self.shooter.projectiles[i] == self:
+                self.shooter.projectiles[i].model.removeNode()
+                del self.shooter.projectiles[i]     
+                break
