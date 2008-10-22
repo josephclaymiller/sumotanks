@@ -45,7 +45,7 @@ class projectile(DirectObject):
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("hit-%in")
-        cSphere = CollisionSphere(0, 0, 0, 1)
+        cSphere = CollisionSphere(0, 0, 0, 3)
         if self.ptype == 1:
             cNode = CollisionNode("Cannon")
         else:
@@ -100,12 +100,10 @@ class projectile(DirectObject):
                 self.shooter.world.computer.vel.magnitude -= .02*self.shooter.world.player.damage
                 if self.shooter.world.computer.vel.magnitude < -7:
                     self.shooter.world.computer.vel.magnitude = -7 
-                print self.shooter.world.computer.vel.magnitude
             else:
                 self.shooter.world.computer.vel.magnitude += .02*self.shooter.world.player.damage
                 if self.shooter.world.computer.vel.magnitude > 7:
                     self.shooter.world.computer.vel.magnitude = 7 
-                print self.shooter.world.computer.vel.magnitude
         else:
             self.shooter.world.addDamage(1, 0)
             self.shooter.world.soundqueue.enqueue('hit' + str(random.randint(1, 3)), self.shooter.world.computer.base.getX(),self.shooter.world.computer.base.getY(),self.shooter.world.computer.base.getZ())

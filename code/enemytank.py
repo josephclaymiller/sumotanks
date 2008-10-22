@@ -103,7 +103,7 @@ class EnemyTank(entity.entity):  #use to create computer tank
     def addCollisionBoundaries(self):
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("hit-%in")
-        cSphere = CollisionSphere(0, 0, 0, 3)
+        cSphere = CollisionSphere(0, 0, 0, 4)
         cNode = CollisionNode("Enemy")
         cNode.addSolid(cSphere)
         cNP = self.base.attachNewNode(cNode)
