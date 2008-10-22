@@ -54,12 +54,8 @@
   <Scalar> magfilter { linear }
   <Scalar> envtype { glow }
 }
-<Group> arena1_temp {
-  <Dart> { 1 }
-  <Group> groundPlane_transform {
-  }
-  <Group> group1 {
     <Group> ground {
+      <Collide> { Polyset keep descend }
       <VertexPool> outputCloth1.verts {
         <Vertex> 0 {
           -0.97511 -1.28448 30.2222
@@ -45695,5 +45691,3 @@
         <VertexRef> { 125 124 1 0 <Ref> { outShape.verts } }
       }
     }
-  }
-}
