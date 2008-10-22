@@ -115,47 +115,53 @@ class EnemyTank(entity.entity):  #use to create computer tank
 
     def enemyHitPlayer(self, entry):
         print "Enemy"
+        print entry
         XDiff = -(self.vel.xcomp()-self.world.player.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.player.oldvel.ycomp())
         print "X: ",self.world.player.oldvel.xcomp()," Y: ", self.world.player.oldvel.ycomp()
+        speed = self.vel.magnitude
+        if self.vel.magnitude >= 0:
+            speed += .3
+        else:
+            speed -= .3
         if XDiff > 0:
             if YDiff > 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
         elif XDiff < 0:
             if YDiff > 0:
                 Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
         elif XDiff == 0:
             if YDiff > 0:
                 Angle = -90
             else:
                 Angle = 90
-            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+            XSpeed = -speed*math.cos(math.radians(Angle))
+            YSpeed = -speed*math.sin(math.radians(Angle))
         elif YDiff == 0:
             if XDiff < 0:
                 Angle = 0
             else:
                 Angle = 180
-            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+            XSpeed = -speed*math.cos(math.radians(Angle))
+            YSpeed = -speed*math.sin(math.radians(Angle))
         if self.damage < 5:
             damfact = 5
         damfact = self.damage
         self.oldvel = self.vel
         self.vel.magnitude = -damfact*0.3*math.sqrt((math.pow(XSpeed,2) + math.pow(YSpeed,2)))
-        print "X: ", XSpeed, " Y: ", YSpeed
+        #print "X: ", XSpeed, " Y: ", YSpeed
         if self.vel.magnitude < -4:
             self.vel.magnitude = -4
         self.damage += 1

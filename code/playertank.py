@@ -103,40 +103,46 @@ class PlayerTank(entity.entity): #use to create player tank
 
     def playerHitEnemy(self, entry):
         print "Player"
+        print entry
         XDiff = -(self.vel.xcomp()-self.world.computer.oldvel.xcomp())
         YDiff = -(self.vel.ycomp()-self.world.computer.oldvel.ycomp())
+        speed = self.vel.magnitude
+        if self.vel.magnitude >= 0:
+            speed += .3
+        else:
+            speed -= .3
         if XDiff > 0:
             if YDiff > 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
         elif XDiff < 0:
             if YDiff > 0:
                 Angle = 180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
             elif YDiff < 0:
                 Angle = -180 + math.degrees(math.atan(YDiff/XDiff))
-                XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-                YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                XSpeed = -speed*math.cos(math.radians(Angle))
+                YSpeed = -speed*math.sin(math.radians(Angle))
         elif XDiff == 0:
             if YDiff > 0:
                 Angle = -90
             else:
                 Angle = 90
-            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+            XSpeed = -speed*math.cos(math.radians(Angle))
+            YSpeed = -speed*math.sin(math.radians(Angle))
         elif YDiff == 0:
             if XDiff < 0:
                 Angle = 0
             else:
-                Angle = 180
-            XSpeed = -(self.vel.magnitude+.3)*math.cos(math.radians(Angle))
-            YSpeed = -(self.vel.magnitude+.3)*math.sin(math.radians(Angle))
+                Angle = 180
+            XSpeed = -speed*math.cos(math.radians(Angle))
+            YSpeed = -speed*math.sin(math.radians(Angle))
         self.oldvel = self.vel
         if self.damage < 5:
             damfact = 5
@@ -232,7 +238,7 @@ class PlayerTank(entity.entity): #use to create player tank
         """Code to move the base of the players tank"""
         delta = task.time - self.prevtimeforPlayer
         self.update()
-        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), self.base.getZ())
+        self.base.setPos(self.base.getX() + self.vel.xcomp(), self.base.getY() + self.vel.ycomp(), 0)
         if self.haschangedtexture == True:
             self.haschangedtexture = False
             self.isMoving = False

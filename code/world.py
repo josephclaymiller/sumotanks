@@ -20,6 +20,7 @@ class World(DirectObject):
         self.soundqueue.loop('menumusic')
 
         base.cTrav = CollisionTraverser('traverser')
+        base.cTrav.setRespectPrevTransform(True)
         self.tankGroundHandler = CollisionHandlerQueue()
         self.floorHandler = CollisionHandlerFloor()
 
@@ -175,12 +176,12 @@ class World(DirectObject):
             if entry.getFromNode().getName() == "Player":
                 tankZ = entry.getSurfacePoint(render).getZ()
                 if tankZ is not self.player.base.getZ():
-                    self.player.base.setPos(self.player.base.getX(), self.player.base.getY(), tankZ)
+                    self.player.base.setPos(self.player.base.getX(), self.player.base.getY(), 0)
                     
             if entry.getFromNode().getName() == "Enemy":
                 tankZ = entry.getSurfacePoint(render).getZ()
                 if tankZ is not self.enemy.base.getZ():
-                    self.enemy.base.setPos(self.enemy.base.getX(), self.enemy.base.getY(), tankZ)
+                    self.enemy.base.setPos(self.enemy.base.getX(), self.enemy.base.getY(), 0)
         return Task.cont
         
     def updateHud(self,task):        
