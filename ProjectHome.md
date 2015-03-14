@@ -1,0 +1,1 @@
+It's a game created for Project 3 of Game Development 1 at RPI.
